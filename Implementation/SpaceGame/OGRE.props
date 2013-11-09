@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <OGRE_HOME>F:\Ogre1.9RC2\OGRE-SDK-1.9.0-vc110-x86-02.11.2013</OGRE_HOME>
+    <BOOST_HOME>F:\Ogre1.9RC2\boost-1.55-rev86545-vc110-x86-02.11.2013</BOOST_HOME>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemDefinitionGroup />
+  <ItemGroup>
+    <BuildMacro Include="OGRE_HOME">
+      <Value>$(OGRE_HOME)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="BOOST_HOME">
+      <Value>$(BOOST_HOME)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+  </ItemGroup>
+</Project>
