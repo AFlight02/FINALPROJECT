@@ -69,6 +69,7 @@ bool Engine::initOgreRenderer(Ogre::String wndTitle, OIS::KeyListener *pKeyListe
 	OIS::ParamList paramList;
 	// Get Window Title from WINDOWS Subsystem
 	mRenderWnd->getCustomAttribute("WINDOW", &hWnd);
+	std::cout << hWnd;
 	paramList.insert(OIS::ParamList::value_type("WINDOW", Ogre::StringConverter::toString(hWnd))); // Convert WINDOW title to string
 	
 	mInputMgr = OIS::InputManager::createInputSystem(paramList); // Create the input manager for the window defined in paramList

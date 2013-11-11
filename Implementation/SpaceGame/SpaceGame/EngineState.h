@@ -59,11 +59,11 @@ protected:
 
 // Define the EngineStaet Class 
 #define DECLARE_ENGINESTATE_CLASS(T)									\
-static void create(EnginetateListener* parent, const Ogre::String name)	\
+static void create(EngineStateListener* parent, const Ogre::String name)	\
 {																		\
 	T* engineState = new T();											\
-	engineState->mParent = parent;										\
-	parent->manageAppState(name, engineState);							\
+	engineState->mParentName = parent;										\
+	parent->manageEngineState(name, engineState);							\
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
