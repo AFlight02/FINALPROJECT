@@ -58,7 +58,7 @@ void GameState::resume()
 
 void GameState::exit()
 {
-	Engine::getSingletonPtr()->mLog->logMessage("Leaving GameState...");
+	Engine::getSingletonPtr()->mLog->logMessage("Leaving GameState");
 #ifdef OGRE_EXTERNAL_OVERLAY
 	mSceneMgr->removeRenderQueueListener(Engine::getSingletonPtr()->mOverlaySystem);
 #endif
@@ -71,10 +71,15 @@ void GameState::createScene()
 {
 	mSceneMgr->createLight("Light")->setPosition(75,75,75);
 	
-	cubeEntity = mSceneMgr->createEntity("Cube1", Ogre::SceneManager::PrefabType::PT_CUBE);
-	cubeNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("Cube1Node");
-	cubeNode->attachObject(cubeEntity);
-	cubeNode->setPosition(Vector3(0,0,-25));
+	mOgreHeadEntity = mSceneMgr->createEntity("OgreHeadEntity", "ogrehead.mesh");
+	mOgreHeadNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("OgreHeadNode");
+	mOgreHeadNode->attachObject(mOgreHeadEntity);
+	mOgreHeadNode->setPosition(Vector3(0, 0, -25));
+
+	mOgreHeadMat = mOgreHeadEntity->getSubEntity(1)->getMaterial();
+	mOgreHeadMatHigh = mOgreHeadMat->clone("OgreHeadMatHigh");
+	mOgreHeadMatHigh->getTechnique(0)->getPass(0)->setAmbient(1, 0, 0);
+	mOgreHeadMatHigh->getTechnique(0)->getPass(0)->setDiffuse(1, 0, 0, 0);
 }
 
 bool GameState::keyPressed(const OIS::KeyEvent &keyEventRef)

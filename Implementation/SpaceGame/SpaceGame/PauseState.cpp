@@ -30,7 +30,7 @@ void PauseState::enter()
 	Engine::getSingletonPtr()->mTrayMgr->showCursor();
 	Engine::getSingletonPtr()->mTrayMgr->createButton(OgreBites::TL_CENTER, "BackToGameBtn", "Return to GameState", 250);
 	Engine::getSingletonPtr()->mTrayMgr->createButton(OgreBites::TL_CENTER, "BackToMenuBtn", "Return to Menu", 250);
-	Engine::getSingletonPtr()->mTrayMgr->createButton(OgreBites::TL_CENTER, "ExitBtn", "Exit AdvancedOgreFramework", 250);
+	Engine::getSingletonPtr()->mTrayMgr->createButton(OgreBites::TL_CENTER, "ExitBtn", "Exit Game", 250);
 	Engine::getSingletonPtr()->mTrayMgr->createLabel(OgreBites::TL_TOP, "PauseLbl", "Pause mode", 250);
 
 	mQuit = false;

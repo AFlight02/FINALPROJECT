@@ -41,8 +41,10 @@ public:
 	void update(double timeSinceLastFrame);
 
 private:
-	Ogre::SceneNode* cubeNode;
-	Ogre::Entity* cubeEntity;
+	Ogre::SceneNode* mOgreHeadNode;
+	Ogre::Entity* mOgreHeadEntity;
+	Ogre::MaterialPtr mOgreHeadMat;
+	Ogre::MaterialPtr mOgreHeadMatHigh;
 
 	OgreBites::ParamsPanel* mDetailsPanel;
 	bool mQuit;

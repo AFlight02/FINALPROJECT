@@ -49,9 +49,9 @@ bool Engine::initOgreRenderer(Ogre::String wndTitle, OIS::KeyListener *pKeyListe
 
 	// Load debug plugins if debug enabled
 #ifdef _DEBUG
-	mRoot = new Ogre::Root("plugins_d.cfg");
+	mRoot = new Ogre::Root("plugins_d_space_game.cfg");
 #else
-	mRoot = new Ogre::Root("plugins.cfg");
+	mRoot = new Ogre::Root("plugins_space_game.cfg");
 #endif
 	// Load Overlay if supported
 #ifdef OGRE_EXTERNAL_OVERLAY
@@ -66,11 +66,12 @@ bool Engine::initOgreRenderer(Ogre::String wndTitle, OIS::KeyListener *pKeyListe
 	mViewport->setCamera(0);
 
 	size_t hWnd = 0;
+	std::ostringstream wndHndStr;
 	OIS::ParamList paramList;
 	// Get Window Title from WINDOWS Subsystem
 	mRenderWnd->getCustomAttribute("WINDOW", &hWnd);
-	std::cout << hWnd;
-	paramList.insert(OIS::ParamList::value_type("WINDOW", Ogre::StringConverter::toString(hWnd))); // Convert WINDOW title to string
+	wndHndStr << (size_t) hWnd;
+	paramList.insert(OIS::ParamList::value_type("WINDOW", wndHndStr.str())); // Convert WINDOW title to string
 	
 	mInputMgr = OIS::InputManager::createInputSystem(paramList); // Create the input manager for the window defined in paramList
 	mKeyboard = static_cast<OIS::Keyboard*>(mInputMgr->createInputObject(OIS::OISKeyboard, true)); // Create the keyboard
@@ -95,9 +96,9 @@ bool Engine::initOgreRenderer(Ogre::String wndTitle, OIS::KeyListener *pKeyListe
 
 	// Load correct resources config
 #ifdef _DEBUG
-	config.load("resources_d.cfg");
+	config.load("resources_d_space_game.cfg");
 #else
-	config.load("resources.cfg");
+	config.load("resources_space_game.cfg");
 #endif
 
 	// Load Ogre Resources from config file and setup Resource and Texture manager
