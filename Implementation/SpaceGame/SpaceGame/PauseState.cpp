@@ -13,10 +13,10 @@ void PauseState::enter()
 {
 	Engine::getSingletonPtr()->mLog->logMessage("Entering PauseState");
 
-	mSceneMgr = Engine::getSingletonPtr()->mRoot->createSceneManager(ST_GENERIC, "PauseSceneMgr");
+	//mSceneMgr = Engine::getSingletonPtr()->mRoot->createSceneManager(ST_GENERIC, "PauseSceneMgr");
 	mSceneMgr->setAmbientLight(Ogre::ColourValue(0.7f, 0.7f, 0.7f));
 
-	mCamera = mSceneMgr->createCamera("PauseCam");
+	/*mCamera = mSceneMgr->createCamera("PauseCam");
 	mCamera->setPosition(Vector3(0, 25, -50));
 	mCamera->lookAt(Vector3(0, 0, 0));
 	mCamera->setNearClipDistance(1);
@@ -25,7 +25,7 @@ void PauseState::enter()
 		Real(Engine::getSingletonPtr()->mViewport->getActualHeight()));
 
 	Engine::getSingletonPtr()->mViewport->setCamera(mCamera);
-
+*/
 	Engine::getSingletonPtr()->mTrayMgr->destroyAllWidgets();
 	Engine::getSingletonPtr()->mTrayMgr->showCursor();
 	Engine::getSingletonPtr()->mTrayMgr->createButton(OgreBites::TL_CENTER, "BackToGameBtn", "Return to GameState", 250);
@@ -35,16 +35,17 @@ void PauseState::enter()
 
 	mQuit = false;
 
-	createScene();
+	createScene(Engine::getSingletonPtr()->mSceneManager, Engine::getSingletonPtr()->mCameraNode);
 
 #ifdef OGRE_EXTERNAL_OVERLAY
 	mSceneMgr->addRenderQueueListener(Engine::getSingletonPtr()->mOverlaySystem);
 #endif
 }
 
-void PauseState::createScene()
+void PauseState::createScene(Ogre::SceneManager* sm, Ogre::SceneNode* cameraNode)
 {
-	// DO NOTHING
+	mSceneMgr = sm;
+	mCameraNode = cameraNode;
 }
 
 void PauseState::exit()
@@ -54,9 +55,9 @@ void PauseState::exit()
 	mSceneMgr->removeRenderQueueListener(Engine::getSingletonPtr()->mOverlaySystem);
 #endif
 
-	mSceneMgr->destroyCamera(mCamera);
+	/*mSceneMgr->destroyCamera(mCamera);
 	if(mSceneMgr)
-		Engine::getSingletonPtr()->mRoot->destroySceneManager(mSceneMgr);
+		Engine::getSingletonPtr()->mRoot->destroySceneManager(mSceneMgr);*/
 
 	Engine::getSingletonPtr()->mTrayMgr->clearAllTrays();
 	Engine::getSingletonPtr()->mTrayMgr->destroyAllWidgets();

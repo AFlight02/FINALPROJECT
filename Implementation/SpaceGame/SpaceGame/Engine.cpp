@@ -61,35 +61,7 @@ bool Engine::initOgreRenderer(Ogre::String wndTitle, OIS::KeyListener *pKeyListe
 	// Init window and viewport
 	if(!mRoot->showConfigDialog()) return false;
 	mRenderWnd = mRoot->initialise(true, wndTitle);
-	mViewport = mRenderWnd->addViewport(0);
-	mViewport->setBackgroundColour(ColourValue(0,0,0,1.0f)); // Set Viewport BG to BLACK 0,0,0,1
-	mViewport->setCamera(0);
-
-	size_t hWnd = 0;
-	std::ostringstream wndHndStr;
-	OIS::ParamList paramList;
-	// Get Window Title from WINDOWS Subsystem
-	mRenderWnd->getCustomAttribute("WINDOW", &hWnd);
-	wndHndStr << (size_t) hWnd;
-	paramList.insert(OIS::ParamList::value_type("WINDOW", wndHndStr.str())); // Convert WINDOW title to string
-	
-	mInputMgr = OIS::InputManager::createInputSystem(paramList); // Create the input manager for the window defined in paramList
-	mKeyboard = static_cast<OIS::Keyboard*>(mInputMgr->createInputObject(OIS::OISKeyboard, true)); // Create the keyboard
-	mMouse = static_cast<OIS::Mouse*>(mInputMgr->createInputObject(OIS::OISMouse, true)); // Create the mouse
-
-	// Set Mouse width/height
-	mMouse->getMouseState().height = mRenderWnd->getHeight();
-	mMouse->getMouseState().width = mRenderWnd->getWidth();
-
-	// Setup mouse/keyboard event callbacks to this if no listeners exist
-	if(pKeyListener == 0)
-		mKeyboard->setEventCallback(this);
-	else
-		mKeyboard->setEventCallback(pKeyListener);
-	if(pMouseListener == 0)
-		mMouse->setEventCallback(this);
-	else
-		mMouse->setEventCallback(pMouseListener);
+	mSceneManager = mRoot->createSceneManager("OctreeSceneManager");
 
 	Ogre::String sectionName, typeName, valueName;
 	Ogre::ConfigFile config;
@@ -117,6 +89,40 @@ bool Engine::initOgreRenderer(Ogre::String wndTitle, OIS::KeyListener *pKeyListe
 	}
 	Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
 	Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
+
+	oculus.setupOculus();
+	oculus.setupOgre(mSceneManager, mRenderWnd);
+	oculus.getCameraNode()->setPosition(0.0f, 1.7f, 10.0f);
+
+	//mViewport = mRenderWnd->addViewport(0);
+	//mViewport->setBackgroundColour(ColourValue(0,0,0,1.0f)); // Set Viewport BG to BLACK 0,0,0,1
+	//mViewport->setCamera(0);
+
+	size_t hWnd = 0;
+	std::ostringstream wndHndStr;
+	OIS::ParamList paramList;
+	// Get Window Title from WINDOWS Subsystem
+	mRenderWnd->getCustomAttribute("WINDOW", &hWnd);
+	wndHndStr << hWnd;
+	paramList.insert(std::make_pair(std::string("WINDOW"), wndHndStr.str())); // Convert WINDOW title to string
+	
+	mInputMgr = OIS::InputManager::createInputSystem(paramList); // Create the input manager for the window defined in paramList
+	mKeyboard = static_cast<OIS::Keyboard*>(mInputMgr->createInputObject(OIS::OISKeyboard, true)); // Create the keyboard
+	mMouse = static_cast<OIS::Mouse*>(mInputMgr->createInputObject(OIS::OISMouse, true)); // Create the mouse
+
+	// Set Mouse width/height
+	mMouse->getMouseState().height = mRenderWnd->getHeight();
+	mMouse->getMouseState().width = mRenderWnd->getWidth();
+
+	// Setup mouse/keyboard event callbacks to this if no listeners exist
+	if(pKeyListener == 0)
+		mKeyboard->setEventCallback(this);
+	else
+		mKeyboard->setEventCallback(pKeyListener);
+	if(pMouseListener == 0)
+		mMouse->setEventCallback(this);
+	else
+		mMouse->setEventCallback(pMouseListener);
 
 	// Get Overlay input contexts
 #ifdef OGRE_EXTERNAL_OVERLAY

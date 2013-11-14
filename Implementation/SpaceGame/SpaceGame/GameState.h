@@ -20,12 +20,11 @@ public:
 	DECLARE_ENGINESTATE_CLASS(GameState)
 
 	void enter();
-	void createScene();
+	void createScene(Ogre::SceneManager* sm, Ogre::SceneNode* cameraNode);
 	void exit();
 	bool pause();
 	void resume();
 
-	void moveCamera();
 	void getInput();
 	void setupGUI();
 
@@ -36,7 +35,6 @@ public:
 	bool mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id);
 	bool mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id);
 
-	void itemSelected(OgreBites::SelectMenu* menu);
 //	void onLeftPressed(const OIS::MouseEvent &evt);
 	void update(double timeSinceLastFrame);
 

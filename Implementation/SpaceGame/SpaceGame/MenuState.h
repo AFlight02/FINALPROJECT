@@ -1,5 +1,5 @@
-#ifndef MENU_STATE_HPP
-#define MENU_STATE_HPP
+#ifndef MENU_STATE_H
+#define MENU_STATE_H
 
 #pragma once
 
@@ -13,7 +13,7 @@ public:
 	DECLARE_ENGINESTATE_CLASS(MenuState)
 
 	void enter();
-	void createScene();
+	void createScene(Ogre::SceneManager* sm, Ogre::SceneNode* cameraNode);
 	void exit();
 
 	bool keyPressed(const OIS::KeyEvent &keyEventRef);

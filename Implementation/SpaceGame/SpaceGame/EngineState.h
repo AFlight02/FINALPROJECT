@@ -52,18 +52,18 @@ protected:
 	void popAllAndPushNewEngineState(EngineState* state){ mParentName->popAllAndPushNewEngineState(state); }
 
 	EngineStateListener* mParentName;
-	Ogre::Camera* mCamera;
 	Ogre::SceneManager* mSceneMgr;
+	Ogre::SceneNode* mCameraNode;
 	Ogre::FrameEvent mFrameEvent;
 };
 
-// Define the EngineStaet Class 
+// Define the EngineState Class 
 #define DECLARE_ENGINESTATE_CLASS(T)									\
-static void create(EngineStateListener* parent, const Ogre::String name)	\
+static void create(EngineStateListener* parent, const Ogre::String name)\
 {																		\
 	T* engineState = new T();											\
-	engineState->mParentName = parent;										\
-	parent->manageEngineState(name, engineState);							\
+	engineState->mParentName = parent;									\
+	parent->manageEngineState(name, engineState);						\
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

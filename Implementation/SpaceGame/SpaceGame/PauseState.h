@@ -1,5 +1,5 @@
-#ifndef PAUSE_STATE_HPP
-#define PAUSE_STATE_HPP
+#ifndef PAUSE_STATE_H
+#define PAUSE_STATE_H
 
 #pragma once
 
@@ -13,7 +13,7 @@ public:
 	DECLARE_ENGINESTATE_CLASS(PauseState)
 
 	void enter();
-    void createScene();
+    void createScene(Ogre::SceneManager* sm, Ogre::SceneNode* cameraNode);
     void exit();
 
     bool keyPressed(const OIS::KeyEvent &keyEventRef);

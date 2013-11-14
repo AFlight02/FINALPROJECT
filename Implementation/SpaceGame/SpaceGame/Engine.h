@@ -9,6 +9,9 @@
 
 #pragma once
 
+// Include Oculus Integration class
+#include "Oculus.h"
+
 // Include Ogre headers
 #include <OgreCamera.h>
 #include <OgreEntity.h>
@@ -62,15 +65,20 @@ public:
 
 	// Define core Ogre resources
 	Ogre::Root* mRoot;
+	Ogre::SceneManager* mSceneManager;
 	Ogre::RenderWindow* mRenderWnd;
 	Ogre::Viewport* mViewport;
 	Ogre::Log* mLog;
 	Ogre::Timer* mTimer;
+	Ogre::SceneNode* mCameraNode;
 
 	// And OIS resources
 	OIS::InputManager* mInputMgr;
 	OIS::Keyboard* mKeyboard;
 	OIS::Mouse* mMouse;
+
+	// Oculus integration handler class
+	Oculus oculus;
 
 	// Setup Overlay if External
 #ifdef OGRE_EXTERNAL_OVERLAY

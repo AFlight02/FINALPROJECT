@@ -12,18 +12,18 @@ void MenuState::enter()
 {
 	Engine::getSingletonPtr()->mLog->logMessage("Entering MenuState");
 
-	mSceneMgr = Engine::getSingletonPtr()->mRoot->createSceneManager(ST_GENERIC, "MenuSceneMgr");
-	mSceneMgr->setAmbientLight(Ogre::ColourValue(0.7f, 0.7f, 0.7f));
+	//mSceneMgr = Engine::getSingletonPtr()->mRoot->createSceneManager(ST_GENERIC, "MenuSceneMgr");
+	//mSceneMgr->setAmbientLight(Ogre::ColourValue(0.7f, 0.7f, 0.7f));
 
-	mCamera = mSceneMgr->createCamera("MenuCam");
-	mCamera->setPosition(Vector3(0, 25, -50));
-	mCamera->lookAt(Vector3(0, 0, 0));
-	mCamera->setNearClipDistance(1);
+	//mCamera = mSceneMgr->createCamera("MenuCam");
+	//mCamera->setPosition(Vector3(0, 25, -50));
+	//mCamera->lookAt(Vector3(0, 0, 0));
+	//mCamera->setNearClipDistance(1);
 
-	mCamera->setAspectRatio(Real(Engine::getSingletonPtr()->mViewport->getActualWidth()) /
-		Real(Engine::getSingletonPtr()->mViewport->getActualHeight()));
+	//mCamera->setAspectRatio(Real(Engine::getSingletonPtr()->mViewport->getActualWidth()) /
+	//	Real(Engine::getSingletonPtr()->mViewport->getActualHeight()));
 
-	Engine::getSingletonPtr()->mViewport->setCamera(mCamera);
+	//Engine::getSingletonPtr()->mViewport->setCamera(mCamera);
 
 	Engine::getSingletonPtr()->mTrayMgr->destroyAllWidgets();
 	Engine::getSingletonPtr()->mTrayMgr->showFrameStats(OgreBites::TL_BOTTOMLEFT);
@@ -33,15 +33,17 @@ void MenuState::enter()
 	Engine::getSingletonPtr()->mTrayMgr->createButton(OgreBites::TL_CENTER, "ExitBtn", "Exit Game", 250);
 	Engine::getSingletonPtr()->mTrayMgr->createLabel(OgreBites::TL_TOP, "MenuLbl", "Menu mode", 250);
 
-	createScene();
+	createScene(Engine::getSingletonPtr()->mSceneManager, Engine::getSingletonPtr()->mCameraNode);
 
 #ifdef OGRE_EXTERNAL_OVERLAY
 	mSceneMgr->addRenderQueueListener(Engine::getSingletonPtr()->mOverlaySystem);
 #endif
 }
 
-void MenuState::createScene()
+void MenuState::createScene(Ogre::SceneManager* sm, Ogre::SceneNode* cameraNode)
 {
+	mSceneMgr = sm;
+	mCameraNode = cameraNode;
 }
 
 void MenuState::exit()
@@ -51,9 +53,9 @@ void MenuState::exit()
 	mSceneMgr->removeRenderQueueListener(Engine::getSingletonPtr()->mOverlaySystem);
 #endif
 
-	mSceneMgr->destroyCamera(mCamera);
+	/*mSceneMgr->destroyCamera(mCamera);
 	if(mSceneMgr)
-		Engine::getSingletonPtr()->mRoot->destroySceneManager(mSceneMgr);
+		Engine::getSingletonPtr()->mRoot->destroySceneManager(mSceneMgr);*/
 
 	Engine::getSingletonPtr()->mTrayMgr->clearAllTrays();
 	Engine::getSingletonPtr()->mTrayMgr->destroyAllWidgets();
