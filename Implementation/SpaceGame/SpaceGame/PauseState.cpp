@@ -7,6 +7,7 @@ PauseState::PauseState()
 	mQuit = false;
 	mQuestionActive = false;
 	mFrameEvent = Ogre::FrameEvent();
+	mSceneMgr = Engine::getSingletonPtr()->mSceneManager;
 }
 
 void PauseState::enter()
@@ -14,7 +15,7 @@ void PauseState::enter()
 	Engine::getSingletonPtr()->mLog->logMessage("Entering PauseState");
 
 	//mSceneMgr = Engine::getSingletonPtr()->mRoot->createSceneManager(ST_GENERIC, "PauseSceneMgr");
-	mSceneMgr->setAmbientLight(Ogre::ColourValue(0.7f, 0.7f, 0.7f));
+	//mSceneMgr->setAmbientLight(Ogre::ColourValue(0.7f, 0.7f, 0.7f));
 
 	/*mCamera = mSceneMgr->createCamera("PauseCam");
 	mCamera->setPosition(Vector3(0, 25, -50));
@@ -35,17 +36,15 @@ void PauseState::enter()
 
 	mQuit = false;
 
-	createScene(Engine::getSingletonPtr()->mSceneManager, Engine::getSingletonPtr()->mCameraNode);
+	createScene();
 
 #ifdef OGRE_EXTERNAL_OVERLAY
 	mSceneMgr->addRenderQueueListener(Engine::getSingletonPtr()->mOverlaySystem);
 #endif
 }
 
-void PauseState::createScene(Ogre::SceneManager* sm, Ogre::SceneNode* cameraNode)
+void PauseState::createScene()
 {
-	mSceneMgr = sm;
-	mCameraNode = cameraNode;
 }
 
 void PauseState::exit()

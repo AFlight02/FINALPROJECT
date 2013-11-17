@@ -6,6 +6,7 @@ MenuState::MenuState(void)
 {
 	mQuit= false;
 	mFrameEvent = Ogre::FrameEvent();
+	mSceneMgr = Engine::getSingletonPtr()->mSceneManager;
 }
 
 void MenuState::enter()
@@ -27,23 +28,20 @@ void MenuState::enter()
 
 	Engine::getSingletonPtr()->mTrayMgr->destroyAllWidgets();
 	Engine::getSingletonPtr()->mTrayMgr->showFrameStats(OgreBites::TL_BOTTOMLEFT);
-	Engine::getSingletonPtr()->mTrayMgr->showLogo(OgreBites::TL_BOTTOMRIGHT);
 	Engine::getSingletonPtr()->mTrayMgr->showCursor();
 	Engine::getSingletonPtr()->mTrayMgr->createButton(OgreBites::TL_CENTER, "EnterBtn", "Enter GameState", 250);
 	Engine::getSingletonPtr()->mTrayMgr->createButton(OgreBites::TL_CENTER, "ExitBtn", "Exit Game", 250);
 	Engine::getSingletonPtr()->mTrayMgr->createLabel(OgreBites::TL_TOP, "MenuLbl", "Menu mode", 250);
 
-	createScene(Engine::getSingletonPtr()->mSceneManager, Engine::getSingletonPtr()->mCameraNode);
+	createScene();
 
 #ifdef OGRE_EXTERNAL_OVERLAY
 	mSceneMgr->addRenderQueueListener(Engine::getSingletonPtr()->mOverlaySystem);
 #endif
 }
 
-void MenuState::createScene(Ogre::SceneManager* sm, Ogre::SceneNode* cameraNode)
+void MenuState::createScene()
 {
-	mSceneMgr = sm;
-	mCameraNode = cameraNode;
 }
 
 void MenuState::exit()

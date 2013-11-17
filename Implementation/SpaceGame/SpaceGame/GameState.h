@@ -4,12 +4,13 @@
  * Version : 1.0
  * Date : 10/11/2013
  */
-#ifndef GAME_STATE_HPP
-#define GAME_STATE_HPP
+#ifndef GAME_STATE_H
+#define GAME_STATE_H
 
 #pragma once
 
 #include "EngineState.h"
+#include "PlayerShip.h"
 #include <OgreSubEntity.h>
 #include <OgreMaterialManager.h>
 
@@ -20,7 +21,7 @@ public:
 	DECLARE_ENGINESTATE_CLASS(GameState)
 
 	void enter();
-	void createScene(Ogre::SceneManager* sm, Ogre::SceneNode* cameraNode);
+	void createScene(Ogre::SceneNode* playerNode);
 	void exit();
 	bool pause();
 	void resume();
@@ -35,7 +36,6 @@ public:
 	bool mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id);
 	bool mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id);
 
-//	void onLeftPressed(const OIS::MouseEvent &evt);
 	void update(double timeSinceLastFrame);
 
 private:
@@ -43,18 +43,13 @@ private:
 	Ogre::Entity* mOgreHeadEntity;
 	Ogre::MaterialPtr mOgreHeadMat;
 	Ogre::MaterialPtr mOgreHeadMatHigh;
-
 	OgreBites::ParamsPanel* mDetailsPanel;
+
+	PlayerShip player;
+
 	bool mQuit;
-
-	Ogre::Vector3 mTranslateVector;
-	Ogre::Real mMoveSpeed;
-	Ogre::Degree mRotateSpeed;
-	float mMoveScale;
-	Ogre::Degree mRotScale;
-
 	bool mLMouseDown, mRMouseDown;
-	bool mSettingsMode;
+	bool mAlreadyInit;
 };
 
 #endif

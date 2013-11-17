@@ -8,37 +8,23 @@
 
 using namespace Ogre;
 
-GameState::GameState()
+GameState::GameState() : player("Player", "ogrehead.mesh", true, 200, 400, 2, Ogre::Radian(0.5f), Ogre::Radian(0.5f), Ogre::Radian(0.5f), 1.5f, 0.8f)
 {
-	mMoveSpeed = 0.1f;
-	mRotateSpeed = 0.3f;
 	mLMouseDown = false;
 	mRMouseDown = false;
 	mQuit = false;
-	mSettingsMode = false;
 	mDetailsPanel = 0;
+	mAlreadyInit = false;
+	mSceneMgr = Engine::getSingletonPtr()->mSceneManager;
 }
 
 void GameState::enter()
 {
 	Engine::getSingletonPtr()->mLog->logMessage("Entering GameState...");
-	
-	//mSceneMgr = Engine::getSingletonPtr()->mRoot->createSceneManager(ST_GENERIC, "GameSceneMgr");
-	//mSceneMgr->setAmbientLight(Ogre::ColourValue(0.7f, 0.7f, 0.7f));
-
-	//mCamera = mSceneMgr->createCamera("GameCamera");
-	//mCamera->setPosition(Vector3(5, 60, 60));
-	//mCamera->lookAt(Vector3(5, 20, 0));
-	//mCamera->setNearClipDistance(5);
-	//mCamera->setAspectRatio(Real(Engine::getSingletonPtr()->mViewport->getActualWidth()) /
-	//	Real(Engine::getSingletonPtr()->mViewport->getActualHeight()));
-
-	//Engine::getSingletonPtr()->mViewport->setCamera(mCamera);
-
+	Engine::getSingletonPtr()->mTrayMgr->showFrameStats(OgreBites::TL_BOTTOMLEFT);
 	setupGUI();
-	createScene(Engine::getSingletonPtr()->mSceneManager, Engine::getSingletonPtr()->mCameraNode);
+	createScene(Engine::getSingletonPtr()->playerNode);
 #ifdef OGRE_EXTERNAL_OVERLAY
-	
 	//mSceneMgr->addRenderQueueListener(Engine::getSingletonPtr()->mOverlaySystem);
 #endif
 }
@@ -68,41 +54,30 @@ void GameState::exit()
 		//Engine::getSingletonPtr()->mRoot->destroySceneManager(mSceneMgr);
 }
 
-void GameState::createScene(Ogre::SceneManager* sm, Ogre::SceneNode* cameraNode)
+void GameState::createScene(Ogre::SceneNode* playerNode)
 {
-	mSceneMgr = sm;
-	mCameraNode = cameraNode;
-	mSceneMgr->createLight("Light")->setPosition(75,75,75);
-	
-	mOgreHeadEntity = mSceneMgr->createEntity("OgreHeadEntity", "ogrehead.mesh");
-	mOgreHeadNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("OgreHeadNode");
-	mOgreHeadNode->attachObject(mOgreHeadEntity);
-	mOgreHeadNode->setPosition(Vector3(0, 0, -25));
+	mSceneMgr->getRootSceneNode()->removeChild("Player_Node");
+	playerNode->addChild(player.getSceneNode());
 
-	mOgreHeadMat = mOgreHeadEntity->getSubEntity(1)->getMaterial();
-	mOgreHeadMatHigh = mOgreHeadMat->clone("OgreHeadMatHigh");
-	mOgreHeadMatHigh->getTechnique(0)->getPass(0)->setAmbient(1, 0, 0);
-	mOgreHeadMatHigh->getTechnique(0)->getPass(0)->setDiffuse(1, 0, 0, 0);
+	if(!mAlreadyInit)
+	{
+		mSceneMgr->createLight("Light")->setPosition(75,75,75);
+	
+		mOgreHeadEntity = mSceneMgr->createEntity("OgreHeadEntity", "ogrehead.mesh");
+		mOgreHeadNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("OgreHeadNode");
+		mOgreHeadNode->attachObject(mOgreHeadEntity);
+		mOgreHeadNode->setPosition(Vector3(0, 0, -25));
+
+		mOgreHeadMat = mOgreHeadEntity->getSubEntity(1)->getMaterial();
+		mOgreHeadMatHigh = mOgreHeadMat->clone("OgreHeadMatHigh");
+		mOgreHeadMatHigh->getTechnique(0)->getPass(0)->setAmbient(1, 0, 0);
+		mOgreHeadMatHigh->getTechnique(0)->getPass(0)->setDiffuse(1, 0, 0, 0);
+	}
+	mAlreadyInit = true;
 }
 
 bool GameState::keyPressed(const OIS::KeyEvent &keyEventRef)
 {
-	if(mSettingsMode == true)
-	{
-		if(Engine::getSingletonPtr()->mKeyboard->isKeyDown(OIS::KC_S))
-		{
-			OgreBites::SelectMenu* pMenu = (OgreBites::SelectMenu*)Engine::getSingletonPtr()->mTrayMgr->getWidget("ChatModeSelMenu");
-			if(pMenu->getSelectionIndex() + 1 < (int)pMenu->getNumItems())
-				pMenu->selectItem(pMenu->getSelectionIndex() + 1);
-		}
-
-		if(Engine::getSingletonPtr()->mKeyboard->isKeyDown(OIS::KC_W))
-		{
-			OgreBites::SelectMenu* pMenu = (OgreBites::SelectMenu*)Engine::getSingletonPtr()->mTrayMgr->getWidget("ChatModeSelMenu");
-			if(pMenu->getSelectionIndex() - 1 >= 0)
-				pMenu->selectItem(pMenu->getSelectionIndex() - 1);
-		}
-	}
 
 	if(Engine::getSingletonPtr()->mKeyboard->isKeyDown(OIS::KC_ESCAPE))
 	{
@@ -123,20 +98,6 @@ bool GameState::keyPressed(const OIS::KeyEvent &keyEventRef)
 			mDetailsPanel->hide();
 		}
 	}
-
-	if(Engine::getSingletonPtr()->mKeyboard->isKeyDown(OIS::KC_TAB))
-	{
-		mSettingsMode = !mSettingsMode;
-		return true;
-	}
-
-	if(mSettingsMode && Engine::getSingletonPtr()->mKeyboard->isKeyDown(OIS::KC_RETURN) ||
-		Engine::getSingletonPtr()->mKeyboard->isKeyDown(OIS::KC_NUMPADENTER))
-	{
-	}
-
-	if(!mSettingsMode || (mSettingsMode && !Engine::getSingletonPtr()->mKeyboard->isKeyDown(OIS::KC_O)))
-		Engine::getSingletonPtr()->keyPressed(keyEventRef);
 
 	return true;
 }
@@ -187,20 +148,7 @@ bool GameState::mouseReleased(const OIS::MouseEvent &evt, OIS::MouseButtonID id)
 
 void GameState::getInput()
 {
-	if(mSettingsMode == false)
-	{
-		if(Engine::getSingletonPtr()->mKeyboard->isKeyDown(OIS::KC_A))
-			mTranslateVector.x = -mMoveScale;
-
-		if(Engine::getSingletonPtr()->mKeyboard->isKeyDown(OIS::KC_D))
-			mTranslateVector.x = mMoveScale;
-
-		if(Engine::getSingletonPtr()->mKeyboard->isKeyDown(OIS::KC_W))
-			mTranslateVector.z = -mMoveScale;
-
-		if(Engine::getSingletonPtr()->mKeyboard->isKeyDown(OIS::KC_S))
-			mTranslateVector.z = mMoveScale;
-	}
+	
 }
 
 void GameState::update(double timeSinceLastFrame)
@@ -214,30 +162,8 @@ void GameState::update(double timeSinceLastFrame)
 		return;
 	}
 
-	if(!Engine::getSingletonPtr()->mTrayMgr->isDialogVisible())
-	{
-		/*if(mDetailsPanel->isVisible())
-		{
-			mDetailsPanel->setParamValue(0, Ogre::StringConverter::toString(mCameraNode->getPosition().x));
-			mDetailsPanel->setParamValue(1, Ogre::StringConverter::toString(mCameraNode->getPosition().y));
-			mDetailsPanel->setParamValue(2, Ogre::StringConverter::toString(mCameraNode->getPosition().z));
-			mDetailsPanel->setParamValue(3, Ogre::StringConverter::toString(mCameraNode->getOrientation().w));
-			mDetailsPanel->setParamValue(4, Ogre::StringConverter::toString(mCameraNode->getOrientation().x));
-			mDetailsPanel->setParamValue(5, Ogre::StringConverter::toString(mCameraNode->getOrientation().y));
-			mDetailsPanel->setParamValue(6, Ogre::StringConverter::toString(mCameraNode->getOrientation().z));
-			if(mSettingsMode)
-				mDetailsPanel->setParamValue(7, "Buffered Input");
-			else
-				mDetailsPanel->setParamValue(7, "Un-Buffered Input");
-		}*/
-	}
-
-	mMoveScale = mMoveSpeed   * timeSinceLastFrame;
-	mRotScale  = mRotateSpeed * timeSinceLastFrame;
-
-	mTranslateVector = Vector3::ZERO;
-
 	getInput();
+	player.update(timeSinceLastFrame);
 }
 
 void GameState::setupGUI()

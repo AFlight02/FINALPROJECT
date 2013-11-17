@@ -13,7 +13,7 @@ public:
 	DECLARE_ENGINESTATE_CLASS(PauseState)
 
 	void enter();
-    void createScene(Ogre::SceneManager* sm, Ogre::SceneNode* cameraNode);
+    void createScene();
     void exit();
 
     bool keyPressed(const OIS::KeyEvent &keyEventRef);

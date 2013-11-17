@@ -20,7 +20,7 @@ public:
 	~Oculus();
 
 	bool setupOculus();
-	bool setupOgre(Ogre::SceneManager *sceneManager, Ogre::RenderWindow *window, Ogre::SceneNode *parent = 0);
+	bool setupOgre(Ogre::SceneManager *sceneManager, Ogre::RenderWindow *window, Ogre::SceneNode *parent);
 	void shutDownOculus();
 	void shutDownOgre();
 	bool isOculusReady() const;

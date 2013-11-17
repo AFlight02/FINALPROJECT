@@ -71,6 +71,7 @@ public:
 	Ogre::Log* mLog;
 	Ogre::Timer* mTimer;
 	Ogre::SceneNode* mCameraNode;
+	Ogre::SceneNode* playerNode;
 
 	// And OIS resources
 	OIS::InputManager* mInputMgr;

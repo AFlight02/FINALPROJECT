@@ -96,20 +96,28 @@
     <ClInclude Include="EngineState.h" />
     <ClInclude Include="EngineStateManager.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameEntity.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="MenuState.h" />
+    <ClInclude Include="MoveableObject.h" />
     <ClInclude Include="Oculus.h" />
     <ClInclude Include="PauseState.h" />
+    <ClInclude Include="PlayerShip.h" />
+    <ClInclude Include="Spacecraft.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="EngineStateManager.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameEntity.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuState.cpp" />
+    <ClCompile Include="MoveableObject.cpp" />
     <ClCompile Include="Oculus.cpp" />
     <ClCompile Include="PauseState.cpp" />
+    <ClCompile Include="PlayerShip.cpp" />
+    <ClCompile Include="Spacecraft.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

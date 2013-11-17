@@ -90,9 +90,14 @@ bool Engine::initOgreRenderer(Ogre::String wndTitle, OIS::KeyListener *pKeyListe
 	Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
 	Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 
+	playerNode = mSceneManager->getRootSceneNode()->createChildSceneNode("PlayerNode");
+	playerNode->setPosition(0.0f, 1.7f, 10.0f);
+
 	oculus.setupOculus();
-	oculus.setupOgre(mSceneManager, mRenderWnd);
-	oculus.getCameraNode()->setPosition(0.0f, 1.7f, 10.0f);
+	oculus.setupOgre(mSceneManager, mRenderWnd, playerNode);
+	//oculus.getCameraNode()->setPosition(0.0f, 1.7f, 10.0f);
+
+	mCameraNode = oculus.getCameraNode();
 
 	//mViewport = mRenderWnd->addViewport(0);
 	//mViewport->setBackgroundColour(ColourValue(0,0,0,1.0f)); // Set Viewport BG to BLACK 0,0,0,1
@@ -193,4 +198,5 @@ bool Engine::mouseReleased(const OIS::MouseEvent &evt, OIS::MouseButtonID id)
 // Update with time since last frame
 void Engine::updateOgre(double timeSinceLastFrame)
 {
+	mCameraNode->setOrientation(oculus.getOrientation());
 }
