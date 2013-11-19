@@ -1,9 +1,3 @@
-/*
- * PauseState.h partially adapted from "AdvancedOgreFramework" - Manages the paused
- * state of the game when the 'ESC' button is pressed during gameplay.
- * Author: Alex Flight
- * Date: 10/11/2013
- */
 #ifndef PAUSE_STATE_H
 #define PAUSE_STATE_H
 
@@ -19,7 +13,7 @@ public:
 	DECLARE_ENGINESTATE_CLASS(PauseState)
 
 	void enter();
-    void createScene(Ogre::SceneManager* sm, Ogre::SceneNode* cameraNode);
+    void createScene();
     void exit();
 
     bool keyPressed(const OIS::KeyEvent &keyEventRef);
