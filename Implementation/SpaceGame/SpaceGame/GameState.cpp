@@ -8,7 +8,7 @@
 
 using namespace Ogre;
 
-GameState::GameState() : player("Player", "ogrehead.mesh", true, 200, 400, 2, Ogre::Radian(0.5f), Ogre::Radian(0.5f), Ogre::Radian(0.5f), 1.5f, 0.8f)
+GameState::GameState() : player("Player", "cockpit2.mesh", true, 200, 400, 2, Ogre::Radian(0.5f), Ogre::Radian(0.5f), Ogre::Radian(0.5f), 1.5f, 0.8f)
 {
 	mLMouseDown = false;
 	mRMouseDown = false;
@@ -63,7 +63,7 @@ void GameState::createScene(Ogre::SceneNode* playerNode)
 	{
 		mSceneMgr->createLight("Light")->setPosition(75,75,75);
 	
-		mOgreHeadEntity = mSceneMgr->createEntity("OgreHeadEntity", "ogrehead.mesh");
+		/*mOgreHeadEntity = mSceneMgr->createEntity("OgreHeadEntity", "ogrehead.mesh");
 		mOgreHeadNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("OgreHeadNode");
 		mOgreHeadNode->attachObject(mOgreHeadEntity);
 		mOgreHeadNode->setPosition(Vector3(0, 0, -25));
@@ -71,7 +71,7 @@ void GameState::createScene(Ogre::SceneNode* playerNode)
 		mOgreHeadMat = mOgreHeadEntity->getSubEntity(1)->getMaterial();
 		mOgreHeadMatHigh = mOgreHeadMat->clone("OgreHeadMatHigh");
 		mOgreHeadMatHigh->getTechnique(0)->getPass(0)->setAmbient(1, 0, 0);
-		mOgreHeadMatHigh->getTechnique(0)->getPass(0)->setDiffuse(1, 0, 0, 0);
+		mOgreHeadMatHigh->getTechnique(0)->getPass(0)->setDiffuse(1, 0, 0, 0);*/
 	}
 	mAlreadyInit = true;
 }

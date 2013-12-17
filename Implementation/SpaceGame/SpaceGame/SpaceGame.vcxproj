@@ -66,7 +66,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>F:\Documents\Documents\Dropbox\Dropbox\Uni Work\FINAL PROJECT\OculusSDK\LibOVR\Lib\Win32;$(OGRE_HOME)\lib;$(OGRE_HOME)\lib\$(Configuration);$(BOOST_HOME)\stage\lib-vc$(PlatformToolsetVersion)-$(PlatformShortName);$(BOOST_HOME)\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>libovrd.lib;Winmm.lib;OgreMain_d.lib;OgreTerrain_d.lib;OIS_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libovrd.lib;Winmm.lib;OgreMain_d.lib;OgreTerrain_d.lib;OIS_d.lib;BulletMultiThreaded_Debug.lib;BulletCollision_Debug.lib;BulletDynamics_Debug.lib;LinearMath_Debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(OutDir)\$(TargetFileName)" "$(OGRE_HOME)\Bin\$(Configuration)"</Command>

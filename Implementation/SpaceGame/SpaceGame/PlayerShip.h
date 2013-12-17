@@ -20,6 +20,8 @@ public:
 		float decceleration, float translate);
 	~PlayerShip();
 
+	void setupPhysics();
+
 	void targetObject();
 	void toggleAdvFlightMode();
 
@@ -44,6 +46,11 @@ protected:
 
 	bool advFlightMode;
 	float SHIELD_RECHARGE_RATE;
+
+	btCollisionShape* shipShape;
+	btDefaultMotionState* shipMotionState;
+	btRigidBody* shipRigidBody;
+	btDynamicsWorld* bulWorld;
 };
 
 #endif

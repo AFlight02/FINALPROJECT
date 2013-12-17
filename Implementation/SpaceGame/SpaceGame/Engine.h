@@ -34,6 +34,9 @@
 // Include OGRE SDK Tray header
 #include <SdkTrays.h>
 
+// Include Bullet Physics
+#include <bullet\btBulletDynamicsCommon.h>
+
 // Use new OGRE Overlay if OGRE Version is >= 1.9
 #if OGRE_VERSION >= ((1 << 16) | (9 << 8) | 0)
     #define OGRE_EXTERNAL_OVERLAY
@@ -80,6 +83,17 @@ public:
 
 	// Oculus integration handler class
 	Oculus oculus;
+
+	// Bullet Resources
+	btBroadphaseInterface* bulBroadphase;
+	btDefaultCollisionConfiguration* bulCollisionConfiguration;
+	btCollisionDispatcher* bulDispatcher;
+	btSequentialImpulseConstraintSolver* bulSolver;
+	btDiscreteDynamicsWorld* bulDynamicsWorld;
+
+	btCollisionShape* shipShape;
+	btDefaultMotionState* shipMotionState;
+	btRigidBody* shipRigidBody;
 
 	// Setup Overlay if External
 #ifdef OGRE_EXTERNAL_OVERLAY

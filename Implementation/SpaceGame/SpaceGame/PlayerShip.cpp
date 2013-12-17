@@ -1,7 +1,7 @@
 #include "PlayerShip.h"
 
 PlayerShip::PlayerShip(Ogre::String entName, Ogre::String meshName, bool isDestroyable, float objMass, float maxVel, float maxAccel, Ogre::Radian roll, Ogre::Radian pitch, Ogre::Radian yaw,
-		float decceleration, float translate)
+					   float decceleration, float translate)
 		: Spacecraft(entName, meshName, isDestroyable, objMass, maxVel, maxAccel, roll, pitch, yaw, decceleration, translate)
 {
 }
@@ -9,6 +9,11 @@ PlayerShip::PlayerShip(Ogre::String entName, Ogre::String meshName, bool isDestr
 
 PlayerShip::~PlayerShip()
 {
+}
+
+void PlayerShip::setupPhysics()
+{
+
 }
 
 void PlayerShip::targetObject()

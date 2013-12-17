@@ -46,6 +46,7 @@ private:
 	OgreBites::ParamsPanel* mDetailsPanel;
 
 	PlayerShip player;
+	btDiscreteDynamicsWorld* bulWorld;
 
 	bool mQuit;
 	bool mLMouseDown, mRMouseDown;
