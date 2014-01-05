@@ -13,7 +13,30 @@ PlayerShip::~PlayerShip()
 
 void PlayerShip::setupPhysics()
 {
+	btScalar mass = 5000;
+	btVector3 shipInertia;
+	shipShape = new btSphereShape(1);
+	shipShape->calculateLocalInertia(mass,shipInertia);
+	
+	motionState = new MoveableObjMotionState(sceneNode);
 
+	btRigidBody::btRigidBodyConstructionInfo shipRigidBodyCI(mass,motionState,shipShape,shipInertia);
+	shipRigidBody = new btRigidBody(shipRigidBodyCI);
+	shipRigidBody->setDamping(0.1,0.1);
+	shipRigidBody->activate();
+	currPitch = 0;
+	currRoll = 0;
+	currYaw = 0;
+	currTranslateX = 0;
+	currTranslateY = 0;
+	currTranslateZ = 0;
+	rotation = btVector3(0,0,0);
+	translation = btVector3(0,0,0);
+}
+
+btRigidBody* PlayerShip::getRigidBody()
+{
+	return shipRigidBody;
 }
 
 void PlayerShip::targetObject()
@@ -28,28 +51,6 @@ void PlayerShip::toggleAdvFlightMode()
 
 bool PlayerShip::keyPressed(const OIS::KeyEvent &keyEventRef)
 {
-	if(Engine::getSingletonPtr()->mKeyboard->isKeyDown(OIS::KC_UP))
-		currPitch += Ogre::Radian(6.05f);
-	if(Engine::getSingletonPtr()->mKeyboard->isKeyDown(OIS::KC_DOWN))
-		currPitch -= Ogre::Radian(0.05f);
-	if(Engine::getSingletonPtr()->mKeyboard->isKeyDown(OIS::KC_LEFT))
-		currRoll -= Ogre::Radian(0.05f);
-	if(Engine::getSingletonPtr()->mKeyboard->isKeyDown(OIS::KC_RIGHT))
-		currRoll += Ogre::Radian(0.05f);
-	if(Engine::getSingletonPtr()->mKeyboard->isKeyDown(OIS::KC_Q))
-		currYaw -= Ogre::Radian(0.05f);
-	if(Engine::getSingletonPtr()->mKeyboard->isKeyDown(OIS::KC_E))
-		currYaw += Ogre::Radian(0.05f);
-	if(Engine::getSingletonPtr()->mKeyboard->isKeyDown(OIS::KC_W))
-		currTranslateX += 0.05f;
-	if(Engine::getSingletonPtr()->mKeyboard->isKeyDown(OIS::KC_S))
-		currTranslateX -= 0.05f;
-	if(Engine::getSingletonPtr()->mKeyboard->isKeyDown(OIS::KC_A))
-		currTranslateY -= 0.05f;
-	if(Engine::getSingletonPtr()->mKeyboard->isKeyDown(OIS::KC_LSHIFT))
-		currAcceleration += 0.05f;
-	if(Engine::getSingletonPtr()->mKeyboard->isKeyDown(OIS::KC_LCONTROL))
-		currAcceleration -= 0.05f;
 	return true;
 }
 
@@ -76,7 +77,12 @@ bool PlayerShip::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id
 
 void PlayerShip::update(double timeSinceLastFrame)
 {
-	pitch(currPitch*timeSinceLastFrame);
+	rotation += btVector3(currPitch, currYaw, currRoll);
+	translation += btVector3(currTranslateX, currTranslateY, currTranslateZ);
+	//shipRigidBody->applyTorque(btVector3(currPitch,currYaw, currRoll)*timeSinceLastFrame);
+
+	//shipRigidBody->applyImpulse(btVector3(currTranslateX,currTranslateY,currTranslateZ), shipRigidBody->getCenterOfMassTransform().getOrigin());
+	//pitch(currPitch*timeSinceLastFrame);
 	//roll(currRoll*timeSinceLastFrame);
 	//yaw(currYaw*timeSinceLastFrame);
 	//translateX(currTranslateX*timeSinceLastFrame);
@@ -89,6 +95,35 @@ void PlayerShip::update(double timeSinceLastFrame)
 	//currTranslateX -= currTranslateX*timeSinceLastFrame;
 	//currTranslateY -= currTranslateY*timeSinceLastFrame;
 	//currAcceleration -= currAcceleration*timeSinceLastFrame;
+
+//	if(currPitch > 0 || currYaw > 0 || currRoll > 0 || currTranslateX > 0 || currTranslateY > 0 || currTranslateZ)
+//		currPitch,currYaw,currRoll,currTranslateX,currTranslateY,currTranslateZ -= timeSinceLastFrame;
+
+	if(rotation.x() > 0)
+		rotation.setX(rotation.x()-timeSinceLastFrame);
+	if(rotation.x() < 0)
+		rotation.setX(rotation.x()+timeSinceLastFrame);
+	if(rotation.y() > 0)
+		rotation.setY(rotation.y()-timeSinceLastFrame);
+	if(rotation.y() < 0)
+		rotation.setY(rotation.y()+timeSinceLastFrame);
+	if(rotation.z() > 0)
+		rotation.setZ(rotation.z()-timeSinceLastFrame);
+	if(rotation.z() < 0)
+		rotation.setZ(rotation.z()+timeSinceLastFrame);
+
+	if(translation.x() > 0)
+		translation.setX(translation.x()-timeSinceLastFrame);
+	if(translation.x() < 0)
+		translation.setX(translation.x()+timeSinceLastFrame);
+	if(translation.y() > 0)
+		translation.setY(translation.y()-timeSinceLastFrame);
+	if(translation.y() < 0)
+		translation.setY(translation.y()+timeSinceLastFrame);
+	if(translation.z() > 0)
+		translation.setZ(translation.z()-timeSinceLastFrame);
+	if(translation.z() < 0)
+		translation.setZ(translation.z()+timeSinceLastFrame);
 
 	if(shields < MAX_SHIELDS)
 		shields += SHIELD_RECHARGE_RATE*timeSinceLastFrame;

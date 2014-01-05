@@ -11,6 +11,7 @@
 
 #include "EngineState.h"
 #include "PlayerShip.h"
+#include "Celestial.h"
 #include <OgreSubEntity.h>
 #include <OgreMaterialManager.h>
 
@@ -46,11 +47,21 @@ private:
 	OgreBites::ParamsPanel* mDetailsPanel;
 
 	PlayerShip player;
-	btDiscreteDynamicsWorld* bulWorld;
+
+	// Bullet Resources
+	btBroadphaseInterface* bulBroadphase;
+	btDefaultCollisionConfiguration* bulCollisionConfiguration;
+	btCollisionDispatcher* bulDispatcher;
+	btSequentialImpulseConstraintSolver* bulSolver;
+	btDiscreteDynamicsWorld* bulDynamicsWorld;
+
+	btRigidBody* shipRigidBody;
 
 	bool mQuit;
 	bool mLMouseDown, mRMouseDown;
 	bool mAlreadyInit;
+
+	btVector3 torque;
 };
 
 #endif

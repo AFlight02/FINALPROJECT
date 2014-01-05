@@ -157,7 +157,11 @@ bool Oculus::setupOgre(Ogre::SceneManager *sceneManager, Ogre::RenderWindow *win
 	mSceneManager = sceneManager;
 	Ogre::LogManager::getSingleton().logMessage("Oculus - integrating with Ogre");
 	if(parent)
+	{
 		mCameraNode = parent->createChildSceneNode("OculusStereoCameraNode");
+		mCameraNode->setInheritOrientation(true);
+		mCameraNode->setInheritScale(true);
+	}
 	else
 		mCameraNode = sceneManager->getRootSceneNode()->createChildSceneNode("OculusStereoCameraNode");
 

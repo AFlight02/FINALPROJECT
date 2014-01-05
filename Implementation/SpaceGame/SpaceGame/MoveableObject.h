@@ -10,6 +10,7 @@
 #pragma once
 
 #include "GameEntity.h"
+#include "MoveableObjMotionState.h"
 
 class GameEntity;
 
@@ -19,12 +20,14 @@ public:
 	MoveableObject(Ogre::String entName, Ogre::String meshName, bool isDestroyable, float objMass);
 	~MoveableObject();
 
+	MoveableObjMotionState* getMotionState();
 	void accelerate();
 
 protected:
 	//PhysicsObject phys TOIMPLEMENT
 	Ogre::Vector3 velocityVector;
 	float MASS;
+	MoveableObjMotionState* motionState;
 };
 
 #endif

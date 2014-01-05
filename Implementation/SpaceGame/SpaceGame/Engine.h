@@ -84,17 +84,6 @@ public:
 	// Oculus integration handler class
 	Oculus oculus;
 
-	// Bullet Resources
-	btBroadphaseInterface* bulBroadphase;
-	btDefaultCollisionConfiguration* bulCollisionConfiguration;
-	btCollisionDispatcher* bulDispatcher;
-	btSequentialImpulseConstraintSolver* bulSolver;
-	btDiscreteDynamicsWorld* bulDynamicsWorld;
-
-	btCollisionShape* shipShape;
-	btDefaultMotionState* shipMotionState;
-	btRigidBody* shipRigidBody;
-
 	// Setup Overlay if External
 #ifdef OGRE_EXTERNAL_OVERLAY
     Ogre::OverlaySystem* mOverlaySystem;

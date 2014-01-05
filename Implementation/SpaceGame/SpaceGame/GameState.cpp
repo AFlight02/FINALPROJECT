@@ -31,7 +31,7 @@ void GameState::enter()
 
 bool GameState::pause()
 {
-	Engine::getSingletonPtr()->mLog->logMessage("Pausing");
+	Engine::getSingletonPtr()->mLog->logMessage("\nPausing");
 	return true;
 }
 
@@ -63,54 +63,183 @@ void GameState::createScene(Ogre::SceneNode* playerNode)
 	{
 		mSceneMgr->createLight("Light")->setPosition(75,75,75);
 	
-		/*mOgreHeadEntity = mSceneMgr->createEntity("OgreHeadEntity", "ogrehead.mesh");
+		mOgreHeadEntity = mSceneMgr->createEntity("OgreHeadEntity", "ogrehead.mesh");
 		mOgreHeadNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("OgreHeadNode");
 		mOgreHeadNode->attachObject(mOgreHeadEntity);
-		mOgreHeadNode->setPosition(Vector3(0, 0, -25));
+		mOgreHeadNode->setPosition(Vector3(0, 0, -205));
 
 		mOgreHeadMat = mOgreHeadEntity->getSubEntity(1)->getMaterial();
 		mOgreHeadMatHigh = mOgreHeadMat->clone("OgreHeadMatHigh");
 		mOgreHeadMatHigh->getTechnique(0)->getPass(0)->setAmbient(1, 0, 0);
-		mOgreHeadMatHigh->getTechnique(0)->getPass(0)->setDiffuse(1, 0, 0, 0);*/
+		mOgreHeadMatHigh->getTechnique(0)->getPass(0)->setDiffuse(1, 0, 0, 0);
 	}
+
+	// Set up Bullet Physics
+	bulBroadphase = new btDbvtBroadphase();
+	bulCollisionConfiguration = new btDefaultCollisionConfiguration();
+	bulDispatcher = new btCollisionDispatcher(bulCollisionConfiguration);
+	bulSolver = new btSequentialImpulseConstraintSolver;
+	bulDynamicsWorld = new btDiscreteDynamicsWorld(bulDispatcher, bulBroadphase, bulSolver, bulCollisionConfiguration);
+	bulDynamicsWorld->setGravity(btVector3(0,0,0));
+
+	torque = btVector3(0,0,0);
+	//shipRigidBody = player.getRigidBody();
+	player.setupPhysics();
+	bulDynamicsWorld->addRigidBody(player.getRigidBody());
 	mAlreadyInit = true;
 }
 
 bool GameState::keyPressed(const OIS::KeyEvent &keyEventRef)
 {
-
-	if(Engine::getSingletonPtr()->mKeyboard->isKeyDown(OIS::KC_ESCAPE))
-	{
-		pushState(findByName("PauseState"));
-		return true;
+	switch(keyEventRef.key) {
+		case(OIS::KC_ESCAPE):
+			Engine::getSingletonPtr()->mLog->logMessage("ESC Pressed");
+			pushState(findByName("PauseState"));
+			break;
+		case(OIS::KC_UP):
+			Engine::getSingletonPtr()->mLog->logMessage("UP Pressed");
+			player.currPitch -= 10;
+			//shipRigidBody->applyTorqueImpulse(shipRigidBody->getInvInertiaTensorWorld().inverse()*(shipRigidBody->getWorldTransform().getBasis()*btVector3(0, 100000000, 0)));
+			//player.getRigidBody()->applyForce(btVector3(0,10,0), player.getRigidBody()->getCenterOfMassPosition());
+			break;
+		case(OIS::KC_DOWN):
+			player.currPitch += 10;
+			//shipRigidBody->applyTorque(btVector3(0, -10, 0));
+			//player.getRigidBody()->applyTorque(btVector3(0,-10,0));
+			break;
+		case(OIS::KC_LEFT):
+			player.currYaw += 10;
+			//shipRigidBody->applyTorque(btVector3(10, 0, 0));
+			//player.getRigidBody()->applyTorque(btVector3(10,0,0));
+			break;
+		case(OIS::KC_RIGHT):
+			player.currYaw -= 10;
+			//shipRigidBody->applyTorque(btVector3(-10, 0, 0));
+			//player.getRigidBody()->applyTorque(btVector3(-10,0,0));
+			break;
+		case(OIS::KC_Q):
+			player.currRoll += 10;
+			//shipRigidBody->applyTorque(btVector3(0, 0, 10));
+			//player.getRigidBody()->applyTorque(btVector3(0,0,10));
+			break;
+		case(OIS::KC_E):
+			player.currRoll -= 10;
+			//shipRigidBody->applyTorque(btVector3(0, 0, -10));
+			//player.getRigidBody()->applyTorque(btVector3(0,0,-10));
+			break;
+		case(OIS::KC_W):
+			Engine::getSingletonPtr()->mLog->logMessage("W Pressed");
+			player.currTranslateY += 100;
+			//shipRigidBody->applyCentralImpulse(btVector3(0,10,0));
+			//player.getRigidBody()->applyImpulse(btVector3(0,10,0), player.getRigidBody()->getCenterOfMassTransform().getOrigin());
+			break;
+		case(OIS::KC_S):
+			player.currTranslateY -= 100;
+			//shipRigidBody->applyCentralImpulse(btVector3(0,-10,0));
+			//player.getRigidBody()->applyImpulse(btVector3(0,-10,0), player.getRigidBody()->getCenterOfMassTransform().getOrigin());
+			break;
+		case(OIS::KC_A):
+			player.currTranslateX -=100;
+			//shipRigidBody->applyCentralImpulse(btVector3(10,0,0));
+			//player.getRigidBody()->applyImpulse(btVector3(10,0,0), player.getRigidBody()->getCenterOfMassTransform().getOrigin());
+			break;
+		case(OIS::KC_D):
+			player.currTranslateX += 100;
+			//shipRigidBody->applyCentralImpulse(btVector3(-10,0,0));
+			//player.getRigidBody()->applyImpulse(btVector3(10,0,0), player.getRigidBody()->getCenterOfMassTransform().getOrigin());
+			break;
+		case(OIS::KC_LSHIFT):
+			player.currTranslateZ -= 250;
+			//shipRigidBody->applyCentralImpulse(btVector3(0,0,20));
+			//player.getRigidBody()->applyCentralImpulse(player.getRigidBody()->getWorldTransform().getBasis().getColumn(2) * 20);
+			break;
+		case(OIS::KC_LCONTROL):
+			player.currTranslateZ += 250;
+			//shipRigidBody->applyCentralImpulse(btVector3(0,0,-20));
+			//player.getRigidBody()->applyCentralImpulse(player.getRigidBody()->getWorldTransform().getBasis().getColumn(2) * -20);
+			break;
+		default:
+			break;
 	}
-
-	if(Engine::getSingletonPtr()->mKeyboard->isKeyDown(OIS::KC_I))
-	{
-		if(mDetailsPanel->getTrayLocation() == OgreBites::TL_NONE)
-		{
-			Engine::getSingletonPtr()->mTrayMgr->moveWidgetToTray(mDetailsPanel, OgreBites::TL_TOPLEFT, 0);
-			mDetailsPanel->show();
-		}
-		else
-		{
-			Engine::getSingletonPtr()->mTrayMgr->removeWidgetFromTray(mDetailsPanel);
-			mDetailsPanel->hide();
-		}
-	}
-
 	return true;
 }
 
 bool GameState::keyReleased(const OIS::KeyEvent &keyEventRef)
 {
 	Engine::getSingletonPtr()->keyPressed(keyEventRef);
+		switch(keyEventRef.key) {
+		case(OIS::KC_UP):
+			Engine::getSingletonPtr()->mLog->logMessage("UP Pressed");
+			player.currPitch = 0;
+			//shipRigidBody->applyTorqueImpulse(shipRigidBody->getInvInertiaTensorWorld().inverse()*(shipRigidBody->getWorldTransform().getBasis()*btVector3(0, 100000000, 0)));
+			//player.getRigidBody()->applyForce(btVector3(0,10,0), player.getRigidBody()->getCenterOfMassPosition());
+			break;
+		case(OIS::KC_DOWN):
+			player.currPitch = 0;
+			//shipRigidBody->applyTorque(btVector3(0, -10, 0));
+			//player.getRigidBody()->applyTorque(btVector3(0,-10,0));
+			break;
+		case(OIS::KC_LEFT):
+			player.currYaw = 0;
+			//shipRigidBody->applyTorque(btVector3(10, 0, 0));
+			//player.getRigidBody()->applyTorque(btVector3(10,0,0));
+			break;
+		case(OIS::KC_RIGHT):
+			player.currYaw = 0;
+			//shipRigidBody->applyTorque(btVector3(-10, 0, 0));
+			//player.getRigidBody()->applyTorque(btVector3(-10,0,0));
+			break;
+		case(OIS::KC_Q):
+			player.currRoll = 0;
+			//shipRigidBody->applyTorque(btVector3(0, 0, 10));
+			//player.getRigidBody()->applyTorque(btVector3(0,0,10));
+			break;
+		case(OIS::KC_E):
+			player.currRoll = 0;
+			//shipRigidBody->applyTorque(btVector3(0, 0, -10));
+			//player.getRigidBody()->applyTorque(btVector3(0,0,-10));
+			break;
+		case(OIS::KC_W):
+			Engine::getSingletonPtr()->mLog->logMessage("W Pressed");
+			player.currTranslateY = 0;
+			//shipRigidBody->applyCentralImpulse(btVector3(0,10,0));
+			//player.getRigidBody()->applyImpulse(btVector3(0,10,0), player.getRigidBody()->getCenterOfMassTransform().getOrigin());
+			break;
+		case(OIS::KC_S):
+			player.currTranslateY = 0;
+			//shipRigidBody->applyCentralImpulse(btVector3(0,-10,0));
+			//player.getRigidBody()->applyImpulse(btVector3(0,-10,0), player.getRigidBody()->getCenterOfMassTransform().getOrigin());
+			break;
+		case(OIS::KC_A):
+			player.currTranslateX = 0;
+			//shipRigidBody->applyCentralImpulse(btVector3(10,0,0));
+			//player.getRigidBody()->applyImpulse(btVector3(10,0,0), player.getRigidBody()->getCenterOfMassTransform().getOrigin());
+			break;
+		case(OIS::KC_D):
+			player.currTranslateX = 0;
+			//shipRigidBody->applyCentralImpulse(btVector3(-10,0,0));
+			//player.getRigidBody()->applyImpulse(btVector3(10,0,0), player.getRigidBody()->getCenterOfMassTransform().getOrigin());
+			break;
+		case(OIS::KC_LSHIFT):
+			player.currTranslateZ = 0;
+			//shipRigidBody->applyCentralImpulse(btVector3(0,0,20));
+			//player.getRigidBody()->applyCentralImpulse(player.getRigidBody()->getWorldTransform().getBasis().getColumn(2) * 20);
+			break;
+		case(OIS::KC_LCONTROL):
+			player.currTranslateZ = 0;
+			//shipRigidBody->applyCentralImpulse(btVector3(0,0,-20));
+			//player.getRigidBody()->applyCentralImpulse(player.getRigidBody()->getWorldTransform().getBasis().getColumn(2) * -20);
+			break;
+		default:
+			break;
+	}
 	return true;
 }
 
 bool GameState::mouseMoved(const OIS::MouseEvent &evt)
 {
 	if(Engine::getSingletonPtr()->mTrayMgr->injectMouseMove(evt)) return true;
+	//shipRigidBody->applyTorque(btVector3(-evt.state.X.rel, evt.state.Y.rel, 0));
 	return true;
 }
 
@@ -161,9 +290,30 @@ void GameState::update(double timeSinceLastFrame)
 		popState();
 		return;
 	}
+	bulDynamicsWorld->stepSimulation(timeSinceLastFrame,5);
+	
+	btTransform trans;
+	player.getMotionState()->getWorldTransform(trans);
+	btQuaternion orientation = trans.getRotation();
+	//player.getSceneNode()->setPosition(Ogre::Vector3(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ()));
+	//player.getSceneNode()->setOrientation(Ogre::Quaternion(orientation.getW(), orientation.getX(), orientation.getY(), orientation.getZ()));
+	StringConverter sc;
+	//Engine::getSingletonPtr()->mLog->logMessage("Trans: "+sc.toString(trans.getOrigin().x()));
+	//Engine::getSingletonPtr()->mLog->logMessage("Orient: "+sc.toString(orientation.x()));
 
+	player.getRigidBody()->activate(true);
+	btMatrix3x3& movement = player.getRigidBody()->getWorldTransform().getBasis();
+	btVector3 correctedRot = movement*player.rotation;
+	btVector3 correctedTrans = movement*player.translation;
+	player.getRigidBody()->applyTorqueImpulse(correctedRot/1000);
+	player.getRigidBody()->applyCentralImpulse(correctedTrans/100);
+	//player.getRigidBody()->applyTorqueImpulse(btVector3(0, 10, 0));
 	getInput();
 	player.update(timeSinceLastFrame);
+	//player.getRigidBody()->applyCentralForce(player.rotation);
+	//player.getRigidBody()->applyTorqueImpulse(player.rotation);
+	//player.getRigidBody()->applyCentralImpulse(player.translation);
+	//torque = btVector3(0,0,0);
 }
 
 void GameState::setupGUI()

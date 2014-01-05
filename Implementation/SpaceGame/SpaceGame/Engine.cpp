@@ -101,6 +101,10 @@ bool Engine::initOgreRenderer(Ogre::String wndTitle, OIS::KeyListener *pKeyListe
 
 	mCameraNode = oculus.getCameraNode();
 	mCameraNode->translate(0,15,-30);
+	mCameraNode->setInheritOrientation(true);
+
+	//mSceneManager->getRootSceneNode()->removeChild("OculusStereoCameraNode");
+	//playerNode->addChild(mCameraNode);
 
 	//mViewport = mRenderWnd->addViewport(0);
 	//mViewport->setBackgroundColour(ColourValue(0,0,0,1.0f)); // Set Viewport BG to BLACK 0,0,0,1
@@ -148,23 +152,6 @@ bool Engine::initOgreRenderer(Ogre::String wndTitle, OIS::KeyListener *pKeyListe
 	mTimer->reset();
 
 	mRenderWnd->setActive(true);
-
-	// Set up Bullet Physics
-	bulBroadphase = new btDbvtBroadphase();
-	bulCollisionConfiguration = new btDefaultCollisionConfiguration();
-	bulDispatcher = new btCollisionDispatcher(bulCollisionConfiguration);
-	bulSolver = new btSequentialImpulseConstraintSolver;
-	bulDynamicsWorld = new btDiscreteDynamicsWorld(bulDispatcher, bulBroadphase, bulSolver, bulCollisionConfiguration);
-	bulDynamicsWorld->setGravity(btVector3(0,0,0));
-
-	/*shipMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)));
-	btScalar mass = 1;
-	btVector3 shipInertia(0,0,0);
-	shipShape->calculateLocalInertia(mass,shipInertia);
-
-	btRigidBody::btRigidBodyConstructionInfo shipRigidBodyCI(mass,shipMotionState,shipShape,shipInertia);
-	shipRigidBody = new btRigidBody(shipRigidBodyCI);
-	bulDynamicsWorld->addRigidBody(shipRigidBody);*/
 
 	return true;
 }
@@ -220,5 +207,4 @@ bool Engine::mouseReleased(const OIS::MouseEvent &evt, OIS::MouseButtonID id)
 void Engine::updateOgre(double timeSinceLastFrame)
 {
 	mCameraNode->setOrientation(oculus.getOrientation());
-	bulDynamicsWorld->stepSimulation(1/60.f,10);
 }

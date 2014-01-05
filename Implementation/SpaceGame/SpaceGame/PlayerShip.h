@@ -21,6 +21,7 @@ public:
 	~PlayerShip();
 
 	void setupPhysics();
+	btRigidBody* getRigidBody();
 
 	void targetObject();
 	void toggleAdvFlightMode();
@@ -34,23 +35,26 @@ public:
 
 	void update(double timeSinceLastFrame);
 
+	float currPitch;
+	float currYaw;
+	float currRoll;
+	float currTranslateX;
+	float currTranslateY;
+	float currTranslateZ;
+
+	btVector3 translation;
+	btVector3 rotation;
+
 protected:
 	//HUD hud
 	Ogre::Entity* target;
-	Ogre::Radian currPitch;
-	Ogre::Radian currYaw;
-	Ogre::Radian currRoll;
-	float currTranslateX;
-	float currTranslateY;
-	float currAcceleration;
 
 	bool advFlightMode;
 	float SHIELD_RECHARGE_RATE;
 
 	btCollisionShape* shipShape;
-	btDefaultMotionState* shipMotionState;
+	MoveableObjMotionState* shipMotionState;
 	btRigidBody* shipRigidBody;
-	btDynamicsWorld* bulWorld;
 };
 
 #endif

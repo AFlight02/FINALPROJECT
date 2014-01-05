@@ -56,7 +56,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>
       </SDLCheck>
-      <AdditionalIncludeDirectories>..\AdvancedOgreFramework;$(OGRE_HOME)\include;$(OGRE_HOME)\include\OIS;$(OGRE_HOME)\include\OGRE;$(OGRE_HOME)\include\OGRE\Overlay;$(BOOST_HOME);F:\Documents\Documents\Dropbox\Dropbox\Uni Work\FINAL PROJECT\OculusSDK\LibOVR\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\AdvancedOgreFramework;$(OGRE_HOME)\include;$(OGRE_HOME)\include\OIS;$(OGRE_HOME)\include\OGRE;$(OGRE_HOME)\include\OGRE\Overlay;$(BOOST_HOME);F:\Documents\Documents\Dropbox\Dropbox\Uni Work\FINAL PROJECT\OculusSDK\LibOVR\Include;F:\Ogre1.9RC2\btogre-master\include;F:\Ogre1.9RC2\btogre-master;$(OGRE_HOME)\include\OgreProcedural</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>OVR_BUILD_DEBUG;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader />
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
@@ -66,7 +66,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>F:\Documents\Documents\Dropbox\Dropbox\Uni Work\FINAL PROJECT\OculusSDK\LibOVR\Lib\Win32;$(OGRE_HOME)\lib;$(OGRE_HOME)\lib\$(Configuration);$(BOOST_HOME)\stage\lib-vc$(PlatformToolsetVersion)-$(PlatformShortName);$(BOOST_HOME)\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>libovrd.lib;Winmm.lib;OgreMain_d.lib;OgreTerrain_d.lib;OIS_d.lib;BulletMultiThreaded_Debug.lib;BulletCollision_Debug.lib;BulletDynamics_Debug.lib;LinearMath_Debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libovrd.lib;Winmm.lib;OgreMain_d.lib;OgreTerrain_d.lib;OIS_d.lib;BulletMultiThreaded_Debug.lib;BulletCollision_Debug.lib;BulletDynamics_Debug.lib;LinearMath_Debug.lib;OgreProcedural_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(OutDir)\$(TargetFileName)" "$(OGRE_HOME)\Bin\$(Configuration)"</Command>
@@ -80,7 +80,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>
       </SDLCheck>
-      <AdditionalIncludeDirectories>..\AdvancedOgreFramework;$(OGRE_HOME)\include;$(OGRE_HOME)\include\OIS;$(OGRE_HOME)\include\OGRE;$(OGRE_HOME)\include\OGRE\Overlay;$(BOOST_HOME);F:\Documents\Documents\Dropbox\Dropbox\Uni Work\FINAL PROJECT\OculusSDK\LibOVR\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\AdvancedOgreFramework;$(OGRE_HOME)\include;$(OGRE_HOME)\include\OIS;$(OGRE_HOME)\include\OGRE;$(OGRE_HOME)\include\OGRE\Overlay;$(BOOST_HOME);F:\Documents\Documents\Dropbox\Dropbox\Uni Work\FINAL PROJECT\OculusSDK\LibOVR\Include;F:\Ogre1.9RC2\btogre-master\include;F:\Ogre1.9RC2\btogre-master</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader />
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
@@ -98,6 +98,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Celestial.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="EngineState.h" />
     <ClInclude Include="EngineStateManager.h" />
@@ -106,12 +107,15 @@
     <ClInclude Include="GameState.h" />
     <ClInclude Include="MenuState.h" />
     <ClInclude Include="MoveableObject.h" />
+    <ClInclude Include="MoveableObjMotionState.h" />
     <ClInclude Include="Oculus.h" />
     <ClInclude Include="PauseState.h" />
+    <ClInclude Include="Physics.h" />
     <ClInclude Include="PlayerShip.h" />
     <ClInclude Include="Spacecraft.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Celestial.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="EngineStateManager.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -120,8 +124,10 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="MoveableObject.cpp" />
+    <ClCompile Include="MoveableObjMotionState.cpp" />
     <ClCompile Include="Oculus.cpp" />
     <ClCompile Include="PauseState.cpp" />
+    <ClCompile Include="Physics.cpp" />
     <ClCompile Include="PlayerShip.cpp" />
     <ClCompile Include="Spacecraft.cpp" />
   </ItemGroup>
