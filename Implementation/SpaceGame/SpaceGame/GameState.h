@@ -10,7 +10,9 @@
 #pragma once
 
 #include "EngineState.h"
+#include "Physics.h"
 #include "PlayerShip.h"
+#include "Enemy.h"
 #include "Celestial.h"
 #include <OgreSubEntity.h>
 #include <OgreMaterialManager.h>
@@ -46,22 +48,16 @@ private:
 	Ogre::MaterialPtr mOgreHeadMatHigh;
 	OgreBites::ParamsPanel* mDetailsPanel;
 
+	Physics physEngine;
 	PlayerShip player;
+	Enemy testEnemy1;
 
-	// Bullet Resources
-	btBroadphaseInterface* bulBroadphase;
-	btDefaultCollisionConfiguration* bulCollisionConfiguration;
-	btCollisionDispatcher* bulDispatcher;
-	btSequentialImpulseConstraintSolver* bulSolver;
-	btDiscreteDynamicsWorld* bulDynamicsWorld;
-
-	btRigidBody* shipRigidBody;
+	Ogre::OverlayElement* debugElement;
+	Ogre::TextAreaOverlayElement* mTextArea;
 
 	bool mQuit;
 	bool mLMouseDown, mRMouseDown;
 	bool mAlreadyInit;
-
-	btVector3 torque;
 };
 
 #endif

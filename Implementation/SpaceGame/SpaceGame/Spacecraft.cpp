@@ -1,6 +1,6 @@
 #include "Spacecraft.h"
 
-Spacecraft::Spacecraft(Ogre::String entName, Ogre::String meshName, bool isDestroyable, float objMass, float maxVel, float maxAccel, Ogre::Radian roll, Ogre::Radian pitch, Ogre::Radian yaw,
+Spacecraft::Spacecraft(Ogre::String entName, Ogre::String meshName, bool isDestroyable, float objMass, float maxVel, float maxAccel, float roll, float pitch, float yaw,
 		float decceleration, float translate)
 		: MoveableObject(entName, meshName, isDestroyable, objMass)
 {
@@ -41,81 +41,34 @@ void Spacecraft::applyDamage(float amount)
 	}
 }
 
-void Spacecraft::pitch(Ogre::Radian amount)
+void Spacecraft::pitch(float amount)
 {
-	if(amount > PITCH_RATE)
-	{
-		getSceneNode()->pitch(PITCH_RATE);
-	} else 
-	{
-		getSceneNode()->pitch(amount);
-	}
+	currPitch = amount * PITCH_RATE;
 }
 
-void Spacecraft::roll(Ogre::Radian amount)
+void Spacecraft::roll(float amount)
 {
-	if(amount > ROLL_RATE)
-	{
-		getSceneNode()->roll(ROLL_RATE);
-	} else 
-	{
-		getSceneNode()->roll(amount);
-	}
+	currRoll = amount * ROLL_RATE;
 }
 
-void Spacecraft::yaw(Ogre::Radian amount)
+void Spacecraft::yaw(float amount)
 {
-	if(amount > YAW_RATE)
-	{
-		getSceneNode()->yaw(YAW_RATE);
-	} else 
-	{
-		getSceneNode()->yaw(amount);
-	}
+	currYaw = amount * YAW_RATE;
 }
 
-void Spacecraft::accelerate(float amount)
+void Spacecraft::thrust(float amount)
 {
-	if(amount > MAX_ACCELERATION)
-	{
-		velocityVector.z += MAX_ACCELERATION;
-	} else 
-	{
-		velocityVector.z += amount;
-	}
-}
-
-void Spacecraft::deccelerate(float amount)
-{
-	if(amount > DECCELERATION_RATE)
-	{
-		velocityVector.z -= DECCELERATION_RATE;
-	} else 
-	{
-		velocityVector.z -= amount;
-	}
+	currTranslateZ = amount * MAX_ACCELERATION;
 }
 
 void Spacecraft::translateX(float amount)
 {
-	if(amount > TRANSLATE_RATE)
-	{
-		velocityVector.x += TRANSLATE_RATE;
-	} else 
-	{
-		velocityVector.x += amount;
-	}
+	currTranslateX = amount * TRANSLATE_RATE;
 }
 
 void Spacecraft::translateY(float amount)
 {
-	if(amount > TRANSLATE_RATE)
-	{
-		velocityVector.y += TRANSLATE_RATE;
-	} else 
-	{
-		velocityVector.y += amount;
-	}
+	currTranslateY = amount * TRANSLATE_RATE;
 }
 
 void Spacecraft::fireWeaponPrimary()
@@ -126,4 +79,73 @@ void Spacecraft::fireWeaponPrimary()
 void Spacecraft::fireWeaponSecondary()
 {
 	//TODO
+}
+
+btRigidBody* Spacecraft::getRigidBody()
+{
+	return shipRigidBody;
+}
+
+btVector3 Spacecraft::getTranslationVector()
+{
+	return translation;
+}
+btVector3 Spacecraft::getRotationVector()
+{
+	return rotation;
+}
+
+void Spacecraft::setupPhysics()
+{
+        btScalar bMass = MASS;
+        btVector3 shipInertia;
+        shipShape = new btSphereShape(1);
+        shipShape->calculateLocalInertia(bMass,shipInertia);
+        
+        motionState = new MoveableObjMotionState(sceneNode);
+
+        btRigidBody::btRigidBodyConstructionInfo shipRigidBodyCI(bMass,motionState,shipShape,shipInertia);
+        shipRigidBody = new btRigidBody(shipRigidBodyCI);
+        shipRigidBody->setDamping(0.1,0.1);
+        shipRigidBody->activate();
+        currPitch = 0;
+        currRoll = 0;
+        currYaw = 0;
+        currTranslateX = 0;
+        currTranslateY = 0;
+        currTranslateZ = 0;
+        rotation = btVector3(0,0,0);
+        translation = btVector3(0,0,0);
+}
+
+void Spacecraft::update(double timeSinceLastFrame)
+{
+	rotation += btVector3(currPitch, currYaw, currRoll);
+	translation += btVector3(currTranslateX, currTranslateY, currTranslateZ);
+
+	if(rotation.x() > 0)
+		rotation.setX(rotation.x()-timeSinceLastFrame);
+	if(rotation.x() < 0)
+		rotation.setX(rotation.x()+timeSinceLastFrame);
+	if(rotation.y() > 0)
+		rotation.setY(rotation.y()-timeSinceLastFrame);
+	if(rotation.y() < 0)
+		rotation.setY(rotation.y()+timeSinceLastFrame);
+	if(rotation.z() > 0)
+		rotation.setZ(rotation.z()-timeSinceLastFrame);
+	if(rotation.z() < 0)
+		rotation.setZ(rotation.z()+timeSinceLastFrame);
+
+	if(translation.x() > 0)
+		translation.setX(translation.x()-timeSinceLastFrame);
+	if(translation.x() < 0)
+		translation.setX(translation.x()+timeSinceLastFrame);
+	if(translation.y() > 0)
+		translation.setY(translation.y()-timeSinceLastFrame);
+	if(translation.y() < 0)
+		translation.setY(translation.y()+timeSinceLastFrame);
+	if(translation.z() > 0)
+		translation.setZ(translation.z()-timeSinceLastFrame);
+	if(translation.z() < 0)
+		translation.setZ(translation.z()+timeSinceLastFrame);
 }

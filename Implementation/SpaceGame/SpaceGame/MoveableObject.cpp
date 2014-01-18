@@ -12,11 +12,6 @@ MoveableObject::~MoveableObject()
 {
 }
 
-void MoveableObject::accelerate()
-{
-	getSceneNode()->translate(velocityVector);
-}
-
 MoveableObjMotionState* MoveableObject::getMotionState()
 {
 	return motionState;

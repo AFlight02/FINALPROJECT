@@ -16,28 +16,40 @@ class MoveableObject; //Forward declaration
 class Spacecraft : public MoveableObject
 {
 public:
-	Spacecraft(Ogre::String entName, Ogre::String meshName, bool isDestroyable, float objMass, float maxVel, float maxAccel, Ogre::Radian roll, Ogre::Radian pitch, Ogre::Radian yaw,
+	Spacecraft(Ogre::String entName, Ogre::String meshName, bool isDestroyable, float objMass, float maxVel, float maxAccel, float roll, float pitch, float yaw,
 		float decceleration, float translate);
 	~Spacecraft();
 
 	float getShields();
 	float getHull();
 	
-	void pitch(Ogre::Radian amount);
-	void roll(Ogre::Radian amount);
-	void yaw(Ogre::Radian amount);
-	void accelerate(float amount);
-	void deccelerate(float amount);
+	void pitch(float amount);
+	void roll(float amount);
+	void yaw(float amount);
+	void thrust(float amount);
 	void translateX(float amount);
 	void translateY(float amount);
 	
 	void applyDamage(float amount);
 	void fireWeaponPrimary();
 	void fireWeaponSecondary();
+
+	void update(double timeSinceLastFrame);
+	
+	void setupPhysics();
+	btRigidBody* getRigidBody();
+	btVector3 getTranslationVector();
+	btVector3 getRotationVector();
+
 protected:
-	Ogre::Radian ROLL_RATE;
-    Ogre::Radian YAW_RATE;
-	Ogre::Radian PITCH_RATE;
+	btCollisionShape* shipShape;
+	btRigidBody* shipRigidBody;
+	btVector3 translation;
+	btVector3 rotation;
+
+	float ROLL_RATE;
+    float YAW_RATE;
+	float PITCH_RATE;
 	float MAX_VELOCITY;
 	float MAX_ACCELERATION;
 	float DECCELERATION_RATE;
@@ -47,6 +59,13 @@ protected:
 
 	float shields;
 	float hull;
+
+	float currPitch;
+	float currYaw;
+	float currRoll;
+	float currTranslateX;
+	float currTranslateY;
+	float currTranslateZ;
 
 	//Weapon primaryWeapon; TODO
 	//Weapon secondaryWeapon; TODO

@@ -16,12 +16,9 @@ class Spacecraft;
 class PlayerShip : public Spacecraft,  public OIS::KeyListener, public OIS::MouseListener
 {
 public:
-	PlayerShip(Ogre::String entName, Ogre::String meshName, bool isDestroyable, float objMass, float maxVel, float maxAccel, Ogre::Radian roll, Ogre::Radian pitch, Ogre::Radian yaw,
+	PlayerShip(Ogre::String entName, Ogre::String meshName, bool isDestroyable, float objMass, float maxVel, float maxAccel, float roll, float pitch, float yaw,
 		float decceleration, float translate);
 	~PlayerShip();
-
-	void setupPhysics();
-	btRigidBody* getRigidBody();
 
 	void targetObject();
 	void toggleAdvFlightMode();
@@ -33,28 +30,12 @@ public:
 	bool mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id);
 	bool mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id);
 
-	void update(double timeSinceLastFrame);
-
-	float currPitch;
-	float currYaw;
-	float currRoll;
-	float currTranslateX;
-	float currTranslateY;
-	float currTranslateZ;
-
-	btVector3 translation;
-	btVector3 rotation;
-
 protected:
 	//HUD hud
 	Ogre::Entity* target;
 
 	bool advFlightMode;
 	float SHIELD_RECHARGE_RATE;
-
-	btCollisionShape* shipShape;
-	MoveableObjMotionState* shipMotionState;
-	btRigidBody* shipRigidBody;
 };
 
 #endif

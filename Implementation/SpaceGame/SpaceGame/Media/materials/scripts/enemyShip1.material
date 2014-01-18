@@ -1,0 +1,48 @@
+material Material.001
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.71 0.71 0.71 1 50
+		}
+
+	}
+
+}
+
+
+
+material Material.002
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.71 0.71 0.71 1 50
+		}
+
+	}
+
+}
+
+
+
+material Material.003
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.71 0.71 0.71 1 50
+		}
+
+	}
+
+}

@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Celestial" Collapsed="true">
+    <Position X="0.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAACIA=</HashCode>
+      <FileName>Celestial.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Enemy" Collapsed="true">
+    <Position X="5.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAgAAAABIAAABACAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Enemy.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine" Collapsed="true">
+    <Position X="7.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ECgAAMAAgAQgAAAAEAABAAAEgAAAACAAFEEgADACQQA=</HashCode>
+      <FileName>Engine.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EngineStateListener" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAgAAAAAARAAQAIIAAAgAAACAAAAACAAAAAAA=</HashCode>
+      <FileName>EngineState.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EngineState" Collapsed="true">
+    <Position X="3" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAIAAAAAAAAAAAAJAAQAAMQAAgAAAAAABAVCACAEJAA=</HashCode>
+      <FileName>EngineState.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EngineStateManager" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAhAAAAAAxCAQAAIAAQgAgAAIAAAACAAAAAQA=</HashCode>
+      <FileName>EngineStateManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Game" Collapsed="true">
+    <Position X="9.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgCAAAAAAAAAiAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Game.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameEntity" Collapsed="true">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIRAABAAAAAAAAAAAIEACBAQAAABAEAAABAEAAAQ=</HashCode>
+      <FileName>GameEntity.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameState" Collapsed="true">
+    <Position X="0.75" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>GCoJAoEAAAAAAgTAAAAACggAAAAAIAABDEAAACAEIAA=</HashCode>
+      <FileName>GameState.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MenuState" Collapsed="true">
+    <Position X="5.25" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ECgIAAAAAAAAAACAAgAAAAACAAAAAAAABEAAACAEAAA=</HashCode>
+      <FileName>MenuState.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MoveableObject" Collapsed="true">
+    <Position X="4" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAMAAAAAAAAAAAAAAAAIAAAAAAAEAAA=</HashCode>
+      <FileName>MoveableObject.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MoveableObjMotionState" Collapsed="true">
+    <Position X="11.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAIAAAAAAgAAAAAAAgAAAAAIAAAAgA=</HashCode>
+      <FileName>MoveableObjMotionState.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Oculus" Collapsed="true">
+    <Position X="7.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAACAgAAAkQAQgAAAAgADgAAAgGBAJEDGBBCACAKg=</HashCode>
+      <FileName>Oculus.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PauseState" Collapsed="true">
+    <Position X="3" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>GCiIAAAAAAAAAACAAAAAAAACAAAAAAAABEAAAKAEAAA=</HashCode>
+      <FileName>PauseState.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Physics" Collapsed="true">
+    <Position X="9.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QABAAQAAAAAAEAAQAAIAAAIABAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Physics.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerShip" Collapsed="true">
+    <Position X="3" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ECggIAAAAAAAEAAAIAAAAAAAAAACAAAQAGAAACAAAAA=</HashCode>
+      <FileName>PlayerShip.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Spacecraft" Collapsed="true">
+    <Position X="4" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IgAAAAAABwIAgAAECAbCwCBkAAFiEEBIICAAAQCEASA=</HashCode>
+      <FileName>Spacecraft.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

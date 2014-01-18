@@ -21,11 +21,7 @@ public:
 	~MoveableObject();
 
 	MoveableObjMotionState* getMotionState();
-	void accelerate();
-
 protected:
-	//PhysicsObject phys TOIMPLEMENT
-	Ogre::Vector3 velocityVector;
 	float MASS;
 	MoveableObjMotionState* motionState;
 };
