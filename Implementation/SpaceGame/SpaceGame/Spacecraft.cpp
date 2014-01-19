@@ -16,6 +16,8 @@ Spacecraft::Spacecraft(Ogre::String entName, Ogre::String meshName, bool isDestr
 
 Spacecraft::~Spacecraft()
 {
+	//delete shipRigidBody;
+	//delete shipShape;
 }
 
 float Spacecraft::getShields()

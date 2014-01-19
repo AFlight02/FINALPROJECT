@@ -48,9 +48,9 @@ private:
 	Ogre::MaterialPtr mOgreHeadMatHigh;
 	OgreBites::ParamsPanel* mDetailsPanel;
 
-	Physics physEngine;
-	PlayerShip player;
-	Enemy testEnemy1;
+	Physics* physEngine;
+	PlayerShip* player;
+	Enemy* testEnemy1;
 
 	Ogre::OverlayElement* debugElement;
 	Ogre::TextAreaOverlayElement* mTextArea;

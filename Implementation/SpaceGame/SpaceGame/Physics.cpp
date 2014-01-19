@@ -14,6 +14,11 @@ Physics::Physics()
 
 Physics::~Physics()
 {
+	//delete bulDynamicsWorld;
+    //delete bulSolver;
+    //delete bulDispatcher;
+    //delete bulCollisionConfiguration;
+    //delete bulBroadphase;
 }
 
 void Physics::addRigidBody(btRigidBody* body)

@@ -8,7 +8,7 @@
 
 using namespace Ogre;
 
-GameState::GameState() : player("Player", "cockpit2.mesh", true, 2000, 400, 25, 5, 5, 5, 25, 15), testEnemy1("Enemy1", "enemyShip1.mesh", true, 2000, 400, 25, 5, 5, 5, 25, 15)
+GameState::GameState()
 {
 	mLMouseDown = false;
 	mRMouseDown = false;
@@ -16,6 +16,9 @@ GameState::GameState() : player("Player", "cockpit2.mesh", true, 2000, 400, 25, 
 	mDetailsPanel = 0;
 	mAlreadyInit = false;
 	mSceneMgr = Engine::getSingletonPtr()->mSceneManager;
+	physEngine = new Physics();
+	player = new PlayerShip("Player", "cockpit2.mesh", true, 2000, 400, 25, 5, 5, 5, 25, 15);
+	testEnemy1 = new Enemy("Enemy1", "enemyShip1.mesh", true, 2000, 400, 25, 5, 5, 5, 25, 15);
 }
 
 void GameState::enter()
@@ -59,7 +62,7 @@ void GameState::createScene(Ogre::SceneNode* playerNode)
 	if(!mAlreadyInit)
 	{
 		mSceneMgr->getRootSceneNode()->removeChild("Player_Node");
-		playerNode->addChild(player.getSceneNode());
+		playerNode->addChild(player->getSceneNode());
 		mSceneMgr->createLight("Light")->setPosition(10000,10000,10000);
 	
 		//mOgreHeadEntity = mSceneMgr->createEntity("OgreHeadEntity", "ogrehead.mesh");
@@ -84,15 +87,15 @@ void GameState::createScene(Ogre::SceneNode* playerNode)
 
 	//torque = btVector3(0,0,0);
 	//shipRigidBody = player.getRigidBody();
-	player.setupPhysics();
+	player->setupPhysics();
 	//bulDynamicsWorld->addRigidBody(player.getRigidBody());
-	physEngine.addRigidBody(player.getRigidBody());
+	physEngine->addRigidBody(player->getRigidBody());
 
-	testEnemy1.getSceneNode()->setScale(10, 10, 10);
-	testEnemy1.setupPhysics();
-	testEnemy1.setPosition(Vector3(0,0, -500));
+	testEnemy1->getSceneNode()->setScale(10, 10, 10);
+	testEnemy1->setupPhysics();
+	testEnemy1->setPosition(Vector3(0,0, -500));
 	//bulDynamicsWorld->addRigidBody(testEnemy1->getRigidBody());
-	physEngine.addRigidBody(testEnemy1.getRigidBody());
+	physEngine->addRigidBody(testEnemy1->getRigidBody());
 
 	mAlreadyInit = true;
 }
@@ -105,56 +108,56 @@ bool GameState::keyPressed(const OIS::KeyEvent &keyEventRef)
 			pushState(findByName("PauseState"));
 			break;
 		case(OIS::KC_UP):
-			player.pitch(-1.0f);
+			player->pitch(-1.0f);
 			//player.currPitch -= 10;
 			break;
 		case(OIS::KC_DOWN):
-			player.pitch(1.0f);
+			player->pitch(1.0f);
 			//player.currPitch += 10;
 			break;
 		case(OIS::KC_LEFT):
-			player.yaw(1.0f);
+			player->yaw(1.0f);
 			//player.currYaw += 10;
 			break;
 		case(OIS::KC_RIGHT):
-			player.yaw(-1.0f);
+			player->yaw(-1.0f);
 			//player.currYaw -= 10;
 			break;
 		case(OIS::KC_Q):
-			player.roll(1.0f);
+			player->roll(1.0f);
 			//player.currRoll += 10;
 			break;
 		case(OIS::KC_E):
-			player.roll(-1.0f);
+			player->roll(-1.0f);
 			//player.currRoll -= 10;
 			break;
 		case(OIS::KC_W):
-			player.translateY(1.0f);
+			player->translateY(1.0f);
 			//player.currTranslateY += 100;
 			break;
 		case(OIS::KC_S):
-			player.translateY(-1.0f);
+			player->translateY(-1.0f);
 			//player.currTranslateY -= 100;
 			break;
 		case(OIS::KC_A):
-			player.translateX(-1.0f);
+			player->translateX(-1.0f);
 			//player.currTranslateX -=100;
 			break;
 		case(OIS::KC_D):
-			player.translateX(1.0f);
+			player->translateX(1.0f);
 			//player.currTranslateX += 100;
 			break;
 		case(OIS::KC_LSHIFT):
-			player.thrust(-1.0f);
+			player->thrust(-1.0f);
 			//player.currTranslateZ -= 250;
 			break;
 		case(OIS::KC_LCONTROL):
-			player.thrust(1.0f);
+			player->thrust(1.0f);
 			//player.currTranslateZ += 250;
 			break;
 		// TESTING ENEMY PHYSICS
 		case(OIS::KC_I):
-			testEnemy1.thrust(1.0f);
+			testEnemy1->thrust(1.0f);
 			break;
 		default:
 			break;
@@ -167,51 +170,51 @@ bool GameState::keyReleased(const OIS::KeyEvent &keyEventRef)
 	Engine::getSingletonPtr()->keyPressed(keyEventRef);
 		switch(keyEventRef.key) {
 		case(OIS::KC_UP):
-			player.pitch(0);
+			player->pitch(0);
 			//player.currPitch = 0;
 			break;
 		case(OIS::KC_DOWN):
-			player.pitch(0);
+			player->pitch(0);
 			//player.currPitch = 0;
 			break;
 		case(OIS::KC_LEFT):
-			player.yaw(0);
+			player->yaw(0);
 			//player.currYaw = 0;
 			break;
 		case(OIS::KC_RIGHT):
-			player.yaw(0);
+			player->yaw(0);
 			//player.currYaw = 0;
 			break;
 		case(OIS::KC_Q):
-			player.roll(0);
+			player->roll(0);
 			//player.currRoll = 0;
 			break;
 		case(OIS::KC_E):
-			player.roll(0);
+			player->roll(0);
 			//player.currRoll = 0;
 			break;
 		case(OIS::KC_W):
-			player.translateY(0);
+			player->translateY(0);
 			//player.currTranslateY = 0;
 			break;
 		case(OIS::KC_S):
-			player.translateY(0);
+			player->translateY(0);
 			//player.currTranslateY = 0;
 			break;
 		case(OIS::KC_A):
-			player.translateX(0);
+			player->translateX(0);
 			//player.currTranslateX = 0;
 			break;
 		case(OIS::KC_D):
-			player.translateX(0);
+			player->translateX(0);
 			//player.currTranslateX = 0;
 			break;
 		case(OIS::KC_LSHIFT):
-			player.thrust(0);
+			player->thrust(0);
 			//player.currTranslateZ = 0;
 			break;
 		case(OIS::KC_LCONTROL):
-			player.thrust(0);
+			player->thrust(0);
 			//player.currTranslateZ = 0;
 			break;
 		default:
@@ -276,36 +279,36 @@ void GameState::update(double timeSinceLastFrame)
 		popState();
 		return;
 	}
-	physEngine.stepSimulation(timeSinceLastFrame,5);
+	physEngine->stepSimulation(timeSinceLastFrame,5);
 	
 	btTransform trans;
-	player.getMotionState()->getWorldTransform(trans);
+	player->getMotionState()->getWorldTransform(trans);
 	btQuaternion orientation = trans.getRotation();
-	player.getRigidBody()->activate(true);
-	btMatrix3x3& movement = player.getRigidBody()->getWorldTransform().getBasis();
-	btVector3 correctedRot = movement*player.getRotationVector();
-	btVector3 correctedTrans = movement*player.getTranslationVector();
-	player.getRigidBody()->applyTorqueImpulse(correctedRot/1000);
-	player.getRigidBody()->applyCentralImpulse(correctedTrans/100);
-	player.update(timeSinceLastFrame);
+	player->getRigidBody()->activate(true);
+	btMatrix3x3& movement = player->getRigidBody()->getWorldTransform().getBasis();
+	btVector3 correctedRot = movement*player->getRotationVector();
+	btVector3 correctedTrans = movement*player->getTranslationVector();
+	player->getRigidBody()->applyTorqueImpulse(correctedRot/1000);
+	player->getRigidBody()->applyCentralImpulse(correctedTrans/100);
+	player->update(timeSinceLastFrame);
 
-	testEnemy1.updateAIState(player.getSceneNode()->getPosition(), player.getSceneNode()->getOrientation());
-	btTransform enemyTrans;
-	testEnemy1.getMotionState()->getWorldTransform(enemyTrans);
+	//testEnemy1->updateAIState(player->getSceneNode()->getPosition(), player->getSceneNode()->getOrientation());
+	/*btTransform enemyTrans;
+	testEnemy1->getMotionState()->getWorldTransform(enemyTrans);
 	btQuaternion enemyOrientation = enemyTrans.getRotation();
-	testEnemy1.getRigidBody()->activate(true);
-	btMatrix3x3& enemyMovement = testEnemy1.getRigidBody()->getWorldTransform().getBasis();
-	btVector3 enemyCorrectedRot = enemyMovement * testEnemy1.getRotationVector();
-	btVector3 enemyCorrectedTrans = enemyMovement * testEnemy1.getTranslationVector();
-	testEnemy1.getRigidBody()->applyTorqueImpulse(enemyCorrectedRot/1000);
-	testEnemy1.getRigidBody()->applyCentralImpulse(enemyCorrectedTrans/100);
-	testEnemy1.update(timeSinceLastFrame);
+	testEnemy1->getRigidBody()->activate(true);
+	btMatrix3x3& enemyMovement = testEnemy1->getRigidBody()->getWorldTransform().getBasis();
+	btVector3 enemyCorrectedRot = enemyMovement * testEnemy1->getRotationVector();
+	btVector3 enemyCorrectedTrans = enemyMovement * testEnemy1->getTranslationVector();
+	testEnemy1->getRigidBody()->applyTorqueImpulse(enemyCorrectedRot/1000);
+	testEnemy1->getRigidBody()->applyCentralImpulse(enemyCorrectedTrans/100);
+	testEnemy1->update(timeSinceLastFrame);*/
 
 	if(!Engine::getSingletonPtr()->mTrayMgr->isDialogVisible())
 	{
 		if(mDetailsPanel->isVisible())
 		{
-			int currState = testEnemy1.getAIState();
+			int currState = testEnemy1->getAIState();
 			Ogre::String state;
 			switch(currState)
 			{
@@ -319,10 +322,10 @@ void GameState::update(double timeSinceLastFrame)
 				state = "N/A";
 				break;
 			}
-			mDetailsPanel->setParamValue(0, Ogre::StringConverter::toString(testEnemy1.getTranslationVector().z()));
-			mDetailsPanel->setParamValue(1, Ogre::StringConverter::toString(testEnemy1.getRotationVector().y()));
-			mDetailsPanel->setParamValue(2, Ogre::StringConverter::toString(testEnemy1.getRotationVector().z()));
-			mDetailsPanel->setParamValue(3, Ogre::StringConverter::toString(testEnemy1.getRotationVector().x()));
+			mDetailsPanel->setParamValue(0, Ogre::StringConverter::toString(testEnemy1->getTranslationVector().z()));
+			mDetailsPanel->setParamValue(1, Ogre::StringConverter::toString(testEnemy1->getRotationVector().y()));
+			mDetailsPanel->setParamValue(2, Ogre::StringConverter::toString(testEnemy1->getRotationVector().z()));
+			mDetailsPanel->setParamValue(3, Ogre::StringConverter::toString(testEnemy1->getRotationVector().x()));
 			mDetailsPanel->setParamValue(4, state);
 		}
 	}
