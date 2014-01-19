@@ -16,7 +16,5 @@ protected:
 	btCollisionDispatcher* bulDispatcher;
 	btSequentialImpulseConstraintSolver* bulSolver;
 	btDiscreteDynamicsWorld* bulDynamicsWorld;
-
-	btRigidBody* shipRigidBody;
 };
 
