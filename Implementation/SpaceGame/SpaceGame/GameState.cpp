@@ -17,8 +17,8 @@ GameState::GameState()
 	mAlreadyInit = false;
 	mSceneMgr = Engine::getSingletonPtr()->mSceneManager;
 	physEngine = new Physics();
-	player = new PlayerShip("Player", "cockpit2.mesh", true, 2000, 400, 25, 5, 5, 5, 25, 15);
-	testEnemy1 = new Enemy("Enemy1", "enemyShip1.mesh", true, 2000, 400, 25, 5, 5, 5, 25, 15);
+	player = new PlayerShip("Player", "cockpit2.mesh", true, 200, 400, 25, 5, 5, 5, 25, 15);
+	testEnemy1 = new Enemy("Enemy1", "enemyShip1.mesh", true, 200, 400, 25, 5, 5, 5, 25, 15);
 }
 
 void GameState::enter()
