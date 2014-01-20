@@ -17,7 +17,7 @@ GameState::GameState()
 	mAlreadyInit = false;
 	mSceneMgr = Engine::getSingletonPtr()->mSceneManager;
 	physEngine = new Physics();
-	player = new PlayerShip("Player", "cockpit2.mesh", true, 200, 400, 25, 5, 5, 5, 25, 15);
+	player = new PlayerShip("Player", "cockpit2.mesh", true, 2000, 400, 25, 5, 5, 5, 25, 15);
 	testEnemy1 = new Enemy("Enemy1", "enemyShip1.mesh", true, 200, 400, 25, 5, 5, 5, 25, 15);
 }
 
@@ -292,8 +292,8 @@ void GameState::update(double timeSinceLastFrame)
 	player->getRigidBody()->applyCentralImpulse(correctedTrans/100);
 	player->update(timeSinceLastFrame);
 
-	//testEnemy1->updateAIState(player->getSceneNode()->getPosition(), player->getSceneNode()->getOrientation());
-	/*btTransform enemyTrans;
+	testEnemy1->updateAIState(player->getSceneNode()->getPosition(), player->getSceneNode()->getOrientation());
+	btTransform enemyTrans;
 	testEnemy1->getMotionState()->getWorldTransform(enemyTrans);
 	btQuaternion enemyOrientation = enemyTrans.getRotation();
 	testEnemy1->getRigidBody()->activate(true);
@@ -302,7 +302,7 @@ void GameState::update(double timeSinceLastFrame)
 	btVector3 enemyCorrectedTrans = enemyMovement * testEnemy1->getTranslationVector();
 	testEnemy1->getRigidBody()->applyTorqueImpulse(enemyCorrectedRot/1000);
 	testEnemy1->getRigidBody()->applyCentralImpulse(enemyCorrectedTrans/100);
-	testEnemy1->update(timeSinceLastFrame);*/
+	testEnemy1->update(timeSinceLastFrame);
 
 	if(!Engine::getSingletonPtr()->mTrayMgr->isDialogVisible())
 	{
