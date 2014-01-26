@@ -98,7 +98,9 @@ void GameState::createScene(Ogre::SceneNode* playerNode)
 	physEngine->addRigidBody(testEnemy1->getRigidBody());
 
 	timer = new Timer();
+	
 	mSceneMgr->setDisplaySceneNodes(true);
+
 	mAlreadyInit = true;
 }
 
@@ -312,24 +314,24 @@ void GameState::update(double timeSinceLastFrame)
 	
 	btTransform trans;
 	player->getMotionState()->getWorldTransform(trans);
-	btQuaternion orientation = trans.getRotation();
 	player->getRigidBody()->activate(true);
 	btMatrix3x3& movement = player->getRigidBody()->getWorldTransform().getBasis();
-	btVector3 correctedRot = movement*player->getRotationVector();
-	btVector3 correctedTrans = movement*player->getTranslationVector();
-	player->getRigidBody()->applyTorqueImpulse(correctedRot/100);
+	btVector3 correctedTrans = movement * player->getTranslationVector();
+	//player->getRigidBody()->applyTorqueImpulse(correctedRot/100);
+	player->getRigidBody()->applyTorque(player->getRigidBody()->getInvInertiaTensorWorld().inverse() * player->getRigidBody()->getWorldTransform().getBasis() * player->getRotationVector() * .0001f);
 	player->getRigidBody()->applyCentralImpulse(correctedTrans/100);
 	player->update(timeSinceLastFrame);
 
 	testEnemy1->updateAIState(player->getSceneNode()->getPosition(), player->getSceneNode()->getOrientation());
 	btTransform enemyTrans;
 	testEnemy1->getMotionState()->getWorldTransform(enemyTrans);
-	btQuaternion enemyOrientation = enemyTrans.getRotation();
+	//btQuaternion enemyOrientation = enemyTrans.getRotation();
 	testEnemy1->getRigidBody()->activate(true);
 	btMatrix3x3& enemyMovement = testEnemy1->getRigidBody()->getWorldTransform().getBasis();
-	btVector3 enemyCorrectedRot = enemyMovement * testEnemy1->getRotationVector();
+	//btVector3 enemyCorrectedRot = enemyMovement * testEnemy1->getRotationVector();
 	btVector3 enemyCorrectedTrans = enemyMovement * testEnemy1->getTranslationVector();
-	testEnemy1->getRigidBody()->applyTorqueImpulse(enemyCorrectedRot/100);
+	//testEnemy1->getRigidBody()->applyTorqueImpulse(enemyCorrectedRot/100);
+	testEnemy1->getRigidBody()->applyTorque(testEnemy1->getRigidBody()->getInvInertiaTensorWorld().inverse() * testEnemy1->getRigidBody()->getWorldTransform().getBasis() * testEnemy1->getRotationVector() * .0001f);
 	testEnemy1->getRigidBody()->applyCentralImpulse(enemyCorrectedTrans/100);
 	testEnemy1->update(timeSinceLastFrame);
 

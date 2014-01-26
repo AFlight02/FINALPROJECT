@@ -54,7 +54,7 @@ void Enemy::seek(Ogre::Vector3 targetPos, Ogre::Quaternion targetOrient)
 	torque.normalise();
 
 	// CHEATING - MAKING ENEMY MOVEMENT WORK WITH SCENENODE MANIPULATION FOR NOW!
-	sceneNode->pitch(Ogre::Radian(torque.y));
+	/*sceneNode->pitch(Ogre::Radian(torque.y));
 	sceneNode->yaw(Ogre::Radian(torque.x));
 	sceneNode->roll(Ogre::Radian(targetVectorOrientation.getRotationTo(currVectorOrientation).getRoll().valueRadians()));
 
@@ -67,10 +67,10 @@ void Enemy::seek(Ogre::Vector3 targetPos, Ogre::Quaternion targetOrient)
 	} else 
 	{
 		sceneNode->translate(Ogre::Vector3(0,0,0));
-	}
+	}*/
 
 	// PHYSICS BASED MOVEMENT - NOT YET WORKING - COMING BACK TO IT IN LATER IMPLEMENTATIONS
-	/*pitch(torque.y);
+	pitch(torque.y);
 	yaw(torque.x);
 	roll(targetVectorOrientation.getRotationTo(currVectorOrientation).getRoll().valueRadians());
 	
@@ -79,8 +79,8 @@ void Enemy::seek(Ogre::Vector3 targetPos, Ogre::Quaternion targetOrient)
 		thrust(1.0f);
 	} else if (sceneNode->getPosition().squaredDistance(targetPos) <= 100) 
 	{
-		thrust(-1.0f);
-	}*/
+		thrust(0.0f);
+	}
 }
 
 void Enemy::flee(Ogre::Vector3 targetPos, Ogre::Quaternion targetOrient)
