@@ -42,7 +42,6 @@ public:
 	btVector3 getRotationVector();
 
 protected:
-	btCollisionShape* shipShape;
 	btRigidBody* shipRigidBody;
 	btVector3 translation;
 	btVector3 rotation;

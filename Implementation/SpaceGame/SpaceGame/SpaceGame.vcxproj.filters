@@ -51,9 +51,6 @@
     <ClInclude Include="PlayerShip.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MoveableObjMotionState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Physics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -99,9 +96,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PlayerShip.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MoveableObjMotionState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Physics.cpp">

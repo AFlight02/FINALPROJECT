@@ -4,7 +4,9 @@ MoveableObject::MoveableObject(Ogre::String entName, Ogre::String meshName, bool
 	: GameEntity(entName, meshName, isDestroyable)
 {
 	MASS = objMass;
-	motionState = new MoveableObjMotionState(sceneNode);
+	motionState = new BtOgre::RigidBodyState(sceneNode);
+	BtOgre::StaticMeshToShapeConverter converter(entity);
+	shape = converter.createSphere();
 }
 
 
@@ -12,7 +14,7 @@ MoveableObject::~MoveableObject()
 {
 }
 
-MoveableObjMotionState* MoveableObject::getMotionState()
+BtOgre::RigidBodyState* MoveableObject::getMotionState()
 {
 	return motionState;
 }

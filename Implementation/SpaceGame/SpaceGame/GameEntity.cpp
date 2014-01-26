@@ -10,7 +10,7 @@ GameEntity::GameEntity(Ogre::String eName, Ogre::String mName, bool isDestroyabl
 	entity = sceneManager->createEntity(entityName, meshName);
 	sceneNode = sceneManager->getRootSceneNode()->createChildSceneNode(entityName+"_Node");
 	sceneNode->attachObject(entity);
-	sceneNode->setPosition(Ogre::Vector3(0, 0, -25));
+	//sceneNode->setPosition(Ogre::Vector3(0, 0, -25));
 }
 
 

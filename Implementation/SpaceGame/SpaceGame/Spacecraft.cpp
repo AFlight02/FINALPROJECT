@@ -17,7 +17,7 @@ Spacecraft::Spacecraft(Ogre::String entName, Ogre::String meshName, bool isDestr
 Spacecraft::~Spacecraft()
 {
 	//delete shipRigidBody;
-	//delete shipShape;
+	//delete shape;
 }
 
 float Spacecraft::getShields()
@@ -101,12 +101,9 @@ void Spacecraft::setupPhysics()
 {
         btScalar bMass = MASS;
         btVector3 shipInertia;
-        shipShape = new btSphereShape(1);
-        shipShape->calculateLocalInertia(bMass,shipInertia);
-        
-        motionState = new MoveableObjMotionState(sceneNode);
+        shape->calculateLocalInertia(bMass,shipInertia);
 
-        btRigidBody::btRigidBodyConstructionInfo shipRigidBodyCI(bMass,motionState,shipShape,shipInertia);
+        btRigidBody::btRigidBodyConstructionInfo shipRigidBodyCI(bMass,motionState,shape,shipInertia);
         shipRigidBody = new btRigidBody(shipRigidBodyCI);
         shipRigidBody->setDamping(0.1,0.1);
         shipRigidBody->activate();

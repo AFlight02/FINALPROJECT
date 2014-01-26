@@ -35,7 +35,9 @@
 #include <SdkTrays.h>
 
 // Include Bullet Physics
-#include <bullet\btBulletDynamicsCommon.h>
+#include <BtOgrePG.h>
+#include <BtOgreGP.h>
+#include <BtOgreExtras.h>
 
 // Use new OGRE Overlay if OGRE Version is >= 1.9
 #if OGRE_VERSION >= ((1 << 16) | (9 << 8) | 0)

@@ -17,8 +17,6 @@ GameState::GameState()
 	mAlreadyInit = false;
 	mSceneMgr = Engine::getSingletonPtr()->mSceneManager;
 	physEngine = new Physics();
-	player = new PlayerShip("Player", "cockpit2.mesh", true, 2000, 400, 25, 5, 5, 5, 25, 15);
-	testEnemy1 = new Enemy("Enemy1", "enemyShip1.mesh", true, 200, 400, 25, 5, 5, 5, 25, 15);
 }
 
 void GameState::enter()
@@ -61,8 +59,10 @@ void GameState::createScene(Ogre::SceneNode* playerNode)
 {
 	if(!mAlreadyInit)
 	{
-		mSceneMgr->getRootSceneNode()->removeChild("Player_Node");
-		playerNode->addChild(player->getSceneNode());
+		player = new PlayerShip("Player", "cockpit2.mesh", true, 2000, 400, 25, 5, 5, 5, 25, 15);
+		testEnemy1 = new Enemy("Enemy1", "enemyShip1.mesh", true, 200, 400, 25, 5, 5, 5, 25, 15);
+		mSceneMgr->getRootSceneNode()->removeChild("PlayerNode");
+		player->getSceneNode()->addChild(playerNode);
 		mSceneMgr->createLight("Light")->setPosition(10000,10000,10000);
 	
 		//mOgreHeadEntity = mSceneMgr->createEntity("OgreHeadEntity", "ogrehead.mesh");
@@ -97,6 +97,8 @@ void GameState::createScene(Ogre::SceneNode* playerNode)
 	//bulDynamicsWorld->addRigidBody(testEnemy1->getRigidBody());
 	physEngine->addRigidBody(testEnemy1->getRigidBody());
 
+	timer = new Timer();
+	mSceneMgr->setDisplaySceneNodes(true);
 	mAlreadyInit = true;
 }
 
@@ -272,6 +274,33 @@ void GameState::update(double timeSinceLastFrame)
 	mFrameEvent.timeSinceLastFrame = timeSinceLastFrame;
 	Engine::getSingletonPtr()->mTrayMgr->frameRenderingQueued(mFrameEvent);
 
+	if(timer->getMilliseconds() > 2500)
+	{
+		// CHECKING STATES
+		int currState = testEnemy1->getAIState();
+		Ogre::String state;
+		switch(currState)
+		{
+			case(0):
+				state = "SEEK";
+				Engine::getSingletonPtr()->mLog->logMessage("AI STATE - SEEK");
+				break;
+			case(1):
+				state = "FLEE";
+				Engine::getSingletonPtr()->mLog->logMessage("AI STATE - FLEE");
+				break;
+			default:
+				state = "N/A";
+				Engine::getSingletonPtr()->mLog->logMessage("AI STATE - NONE");
+				break;
+		}
+		//CHECKING SCENENODES
+		Ogre::StringConverter sc;
+		Engine::getSingletonPtr()->mLog->logMessage("PLAYER POS " + sc.toString(player->getPosition()));
+		Engine::getSingletonPtr()->mLog->logMessage("ENEMY1 POS " + sc.toString(testEnemy1->getPosition()));
+		timer->reset();
+	}
+
 	getInput();
 
 	if(mQuit == true)
@@ -288,7 +317,7 @@ void GameState::update(double timeSinceLastFrame)
 	btMatrix3x3& movement = player->getRigidBody()->getWorldTransform().getBasis();
 	btVector3 correctedRot = movement*player->getRotationVector();
 	btVector3 correctedTrans = movement*player->getTranslationVector();
-	player->getRigidBody()->applyTorqueImpulse(correctedRot/1000);
+	player->getRigidBody()->applyTorqueImpulse(correctedRot/100);
 	player->getRigidBody()->applyCentralImpulse(correctedTrans/100);
 	player->update(timeSinceLastFrame);
 
@@ -300,36 +329,38 @@ void GameState::update(double timeSinceLastFrame)
 	btMatrix3x3& enemyMovement = testEnemy1->getRigidBody()->getWorldTransform().getBasis();
 	btVector3 enemyCorrectedRot = enemyMovement * testEnemy1->getRotationVector();
 	btVector3 enemyCorrectedTrans = enemyMovement * testEnemy1->getTranslationVector();
-	testEnemy1->getRigidBody()->applyTorqueImpulse(enemyCorrectedRot/1000);
+	testEnemy1->getRigidBody()->applyTorqueImpulse(enemyCorrectedRot/100);
 	testEnemy1->getRigidBody()->applyCentralImpulse(enemyCorrectedTrans/100);
 	testEnemy1->update(timeSinceLastFrame);
 
-	if(!Engine::getSingletonPtr()->mTrayMgr->isDialogVisible())
-	{
-		if(mDetailsPanel->isVisible())
-		{
-			int currState = testEnemy1->getAIState();
-			Ogre::String state;
-			switch(currState)
-			{
-			case(0):
-				state = "SEEK";
-				break;
-			case(1):
-				state = "FLEE";
-				break;
-			default:
-				state = "N/A";
-				break;
-			}
-			mDetailsPanel->setParamValue(0, Ogre::StringConverter::toString(testEnemy1->getTranslationVector().z()));
-			mDetailsPanel->setParamValue(1, Ogre::StringConverter::toString(testEnemy1->getRotationVector().y()));
-			mDetailsPanel->setParamValue(2, Ogre::StringConverter::toString(testEnemy1->getRotationVector().z()));
-			mDetailsPanel->setParamValue(3, Ogre::StringConverter::toString(testEnemy1->getRotationVector().x()));
-			mDetailsPanel->setParamValue(4, state);
-		}
-	}
-
+	//if(!Engine::getSingletonPtr()->mTrayMgr->isDialogVisible())
+	//{
+	//	if(mDetailsPanel->isVisible())
+	//	{
+	//		int currState = testEnemy1->getAIState();
+	//		Ogre::String state;
+	//		switch(currState)
+	//		{
+	//		case(0):
+	//			state = "SEEK";
+	//			Engine::getSingletonPtr()->mLog->logMessage("AI STATE - SEEK");
+	//			break;
+	//		case(1):
+	//			state = "FLEE";
+	//			Engine::getSingletonPtr()->mLog->logMessage("AI STATE - FLEE");
+	//			break;
+	//		default:
+	//			state = "N/A";
+	//			Engine::getSingletonPtr()->mLog->logMessage("AI STATE - NONE");
+	//			break;
+	//		}
+	//		mDetailsPanel->setParamValue(0, Ogre::StringConverter::toString(testEnemy1->getTranslationVector().z()));
+	//		mDetailsPanel->setParamValue(1, Ogre::StringConverter::toString(testEnemy1->getRotationVector().y()));
+	//		mDetailsPanel->setParamValue(2, Ogre::StringConverter::toString(testEnemy1->getRotationVector().z()));
+	//		mDetailsPanel->setParamValue(3, Ogre::StringConverter::toString(testEnemy1->getRotationVector().x()));
+	//		mDetailsPanel->setParamValue(4, state);
+	//	}
+	//}
 }
 
 void GameState::setupGUI()

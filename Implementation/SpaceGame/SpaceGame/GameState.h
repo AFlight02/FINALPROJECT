@@ -48,6 +48,8 @@ private:
 	Ogre::MaterialPtr mOgreHeadMatHigh;
 	OgreBites::ParamsPanel* mDetailsPanel;
 
+	Ogre::Timer* timer;
+
 	Physics* physEngine;
 	PlayerShip* player;
 	Enemy* testEnemy1;

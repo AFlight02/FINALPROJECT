@@ -1,0 +1,33 @@
+vertex_program CubeShader_VP cg
+{
+	source  CubeShader.cg
+	entry_point mainVP
+	profiles vs_2_0 arbvp1
+	default_params
+	{
+		param_named_auto worldViewProj_m worldviewproj_matrix
+	}
+}
+ 
+fragment_program CubeShader_FP cg
+{
+	source CubeShader.cg
+	entry_point mainFP
+	profiles ps_2_0 arbfp1
+}
+ 
+material CubeShader
+{
+	technique
+	{
+		pass
+		{
+			vertex_program_ref CubeShader_VP
+			{
+			}
+			fragment_program_ref CubeShader_FP
+			{
+			}
+		}
+	}
+}

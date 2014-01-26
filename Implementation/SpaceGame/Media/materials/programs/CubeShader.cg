@@ -1,0 +1,9 @@
+float4 mainVP(float4 pos : POSITION, uniform float4x4 worldViewProj_m) : POSITION
+{
+	return mul(pos,worldViewProj_m);
+}
+ 
+float4 mainFP() : COLOR 
+{
+	return float4(1, 0, 0, 1);
+}

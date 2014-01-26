@@ -5,9 +5,17 @@
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -23,7 +31,21 @@
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v110</PlatformToolset>
@@ -36,7 +58,13 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
@@ -45,9 +73,15 @@
     <IntDir>obj\$(Configuration)-$(PlatformShortName)\</IntDir>
     <TargetName>$(ProjectName)_d</TargetName>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <TargetName>$(ProjectName)_d</TargetName>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)\bin\$(Configuration)\</OutDir>
     <IntDir>obj\$(Configuration)-$(PlatformShortName)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -56,7 +90,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>
       </SDLCheck>
-      <AdditionalIncludeDirectories>..\AdvancedOgreFramework;$(OGRE_HOME)\include;$(OGRE_HOME)\include\OIS;$(OGRE_HOME)\include\OGRE;$(OGRE_HOME)\include\OGRE\Overlay;$(BOOST_HOME);F:\Documents\Documents\Dropbox\Dropbox\Uni Work\FINAL PROJECT\OculusSDK\LibOVR\Include;F:\Ogre1.9RC2\btogre-master\include;F:\Ogre1.9RC2\btogre-master;$(OGRE_HOME)\include\OgreProcedural</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OGRE64)\include;$(OGRE64)\include\OIS;$(OGRE64)\include\OGRE;$(OGRE64)\include\OGRE\Overlay;$(BOOST64);$(OVR_ROOT)\Include;$(OGRE_DEPS64)\include;$(OGRE_ADDONS64)\bullet\include;$(OGRE_ADDONS64)\btogre\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>OVR_BUILD_DEBUG;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader />
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
@@ -64,9 +98,32 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>F:\Documents\Documents\Dropbox\Dropbox\Uni Work\FINAL PROJECT\OculusSDK\LibOVR\Lib\Win32;$(OGRE_HOME)\lib;$(OGRE_HOME)\lib\$(Configuration);$(BOOST_HOME)\stage\lib-vc$(PlatformToolsetVersion)-$(PlatformShortName);$(BOOST_HOME)\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(OVR_ROOT)\Lib\Win32;$(OGRE64)\lib;$(OGRE64)\lib\$(Configuration);$(BOOST64)\lib-vc$(PlatformToolsetVersion)-$(PlatformShortName);$(BOOST64)\lib;$(OGRE_DEPS64)\lib\$(Configuration);$(OGRE_ADDONS64)\bullet\lib\$(Configuration);$(OGRE_ADDONS64)\btogre\lib\$(Configuration)</AdditionalLibraryDirectories>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>libovrd.lib;Winmm.lib;OgreMain_d.lib;OgreTerrain_d.lib;OIS_d.lib;BulletMultiThreaded_Debug.lib;BulletCollision_Debug.lib;BulletDynamics_Debug.lib;LinearMath_Debug.lib;OgreProcedural_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libovrd.lib;Winmm.lib;OgreMain_d.lib;OgreTerrain_d.lib;OIS_d.lib;BulletMultiThreaded_Debug.lib;BulletCollision_Debug.lib;BulletDynamics_Debug.lib;LinearMath_Debug.lib;freetype251_D.lib;BtOgre.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy "$(OutDir)\$(TargetFileName)" "$(OGRE_HOME)\Bin\$(Configuration)"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>
+      </SDLCheck>
+      <AdditionalIncludeDirectories>$(OGRE64)\include;$(OGRE64)\include\OIS;$(OGRE64)\include\OGRE;$(OGRE64)\include\OGRE\Overlay;$(BOOST64);$(OVR_ROOT)\Include;$(OGRE_DEPS64)\include;$(OGRE_ADDONS64)\bullet\include;$(OGRE_ADDONS64)\btogre\include;$(BULLET_INC)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>OVR_BUILD_DEBUG;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
+      <DebugInformationFormat>OldStyle</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(OVR_ROOT)\Lib\x64;$(OGRE64)\lib;$(OGRE64)\lib\$(Configuration);$(BOOST64)\lib-vc$(PlatformToolsetVersion)-$(PlatformShortName);$(BOOST64)\lib;$(OGRE_DEPS64)\lib\$(Configuration);$(OGRE_ADDONS64)\bullet\lib\$(Configuration);$(OGRE_ADDONS64)\btogre\lib\$(Configuration)</AdditionalLibraryDirectories>
+      <SubSystem>Windows</SubSystem>
+      <AdditionalDependencies>libovr64d.lib;Winmm.lib;OgreMain_d.lib;OgreTerrain_d.lib;OIS_d.lib;BulletMultiThreaded_Debug.lib;BulletCollision_Debug.lib;BulletDynamics_Debug.lib;LinearMath_Debug.lib;freetype251_D.lib;BtOgre.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(OutDir)\$(TargetFileName)" "$(OGRE_HOME)\Bin\$(Configuration)"</Command>
@@ -80,7 +137,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>
       </SDLCheck>
-      <AdditionalIncludeDirectories>..\AdvancedOgreFramework;$(OGRE_HOME)\include;$(OGRE_HOME)\include\OIS;$(OGRE_HOME)\include\OGRE;$(OGRE_HOME)\include\OGRE\Overlay;$(BOOST_HOME);F:\Documents\Documents\Dropbox\Dropbox\Uni Work\FINAL PROJECT\OculusSDK\LibOVR\Include;F:\Ogre1.9RC2\btogre-master\include;F:\Ogre1.9RC2\btogre-master</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OGRE64)\include;$(OGRE64)\include\OIS;$(OGRE64)\include\OGRE;$(OGRE64)\include\OGRE\Overlay;$(BOOST64);$(OVR_ROOT)\Include;$(OGRE_DEPS64)\include;$(OGRE_ADDONS64)\bullet\include;$(OGRE_ADDONS64)\btogre\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader />
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
@@ -89,9 +146,35 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>F:\Documents\Documents\Dropbox\Dropbox\Uni Work\FINAL PROJECT\OculusSDK\LibOVR\Lib\Win32;$(OGRE_HOME)\lib;$(OGRE_HOME)\lib\$(Configuration);$(BOOST_HOME)\stage\lib-vc$(PlatformToolsetVersion)-$(PlatformShortName);$(BOOST_HOME)\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(OVR_ROOT)\Lib\Win32;$(OGRE64)\lib;$(OGRE64)\lib\$(Configuration);$(BOOST64)\lib-vc$(PlatformToolsetVersion)-$(PlatformShortName);$(BOOST64)\lib;$(OGRE_DEPS64)\lib\$(Configuration);$(OGRE_ADDONS64)\bullet\lib\$(Configuration);$(OGRE_ADDONS64)\btogre\lib\$(Configuration)</AdditionalLibraryDirectories>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>libovr.lib;Winmm.lib;OgreMain.lib;OgreTerrain.lib;OIS.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libovr.lib;Winmm.lib;OgreMain.lib;OgreTerrain.lib;OIS.lib;BulletMultiThreaded.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;freetype251.lib;BtOgre.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy "$(OutDir)\$(TargetFileName)" "$(OGRE_HOME)\Bin\$(Configuration)"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>
+      </SDLCheck>
+      <AdditionalIncludeDirectories>$(OGRE64)\include;$(OGRE64)\include\OIS;$(OGRE64)\include\OGRE;$(OGRE64)\include\OGRE\Overlay;$(BOOST64);$(OVR_ROOT)\Include;$(OGRE_DEPS64)\include;$(OGRE_ADDONS64)\bullet\include;$(OGRE_ADDONS64)\btogre\include;$(BULLET_INC)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(OVR_ROOT)\Lib\x64;$(OGRE64)\lib;$(OGRE64)\lib\$(Configuration);$(BOOST64)\lib-vc$(PlatformToolsetVersion)-$(PlatformShortName);$(BOOST64)\lib;$(OGRE_DEPS64)\lib\$(Configuration);$(OGRE_ADDONS64)\bullet\lib\$(Configuration);$(OGRE_ADDONS64)\btogre\lib\$(Configuration)</AdditionalLibraryDirectories>
+      <SubSystem>Windows</SubSystem>
+      <AdditionalDependencies>libovr64.lib;Winmm.lib;OgreMain.lib;OgreTerrain.lib;OIS.lib;BulletMultiThreaded.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;freetype251.lib;BtOgre.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(OutDir)\$(TargetFileName)" "$(OGRE_HOME)\Bin\$(Configuration)"</Command>
@@ -108,7 +191,6 @@
     <ClInclude Include="GameState.h" />
     <ClInclude Include="MenuState.h" />
     <ClInclude Include="MoveableObject.h" />
-    <ClInclude Include="MoveableObjMotionState.h" />
     <ClInclude Include="Oculus.h" />
     <ClInclude Include="PauseState.h" />
     <ClInclude Include="Physics.h" />
@@ -126,7 +208,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="MoveableObject.cpp" />
-    <ClCompile Include="MoveableObjMotionState.cpp" />
     <ClCompile Include="Oculus.cpp" />
     <ClCompile Include="PauseState.cpp" />
     <ClCompile Include="Physics.cpp" />
