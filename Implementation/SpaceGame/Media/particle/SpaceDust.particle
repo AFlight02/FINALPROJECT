@@ -1,0 +1,17 @@
+particle_system Space/Dust
+{
+    material        Examples/Flare
+    particle_width	1
+    particle_height 1
+    cull_each       false
+    quota           500
+    billboard_type  point
+    
+    emitter Box
+    {
+        emission_rate   50000
+        height          500
+		width			500
+        depth           500
+    }
+}

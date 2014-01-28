@@ -1,10 +1,10 @@
 #pragma once
-#include "Moveableobject.h"
 
-class Projectile : public MoveableObject
+class Projectile
 {
 public:
-	Projectile(Ogre::String entName, Ogre::String meshName, bool isDestroyable, float objMass);
+	Projectile();
 	~Projectile();
+protected:
 };
 

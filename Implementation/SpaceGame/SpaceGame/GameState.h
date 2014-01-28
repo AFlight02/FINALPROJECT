@@ -40,6 +40,7 @@ public:
 	bool mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id);
 
 	void update(double timeSinceLastFrame);
+	void spaceDust();
 
 private:
 	Ogre::SceneNode* mOgreHeadNode;
@@ -49,6 +50,9 @@ private:
 	OgreBites::ParamsPanel* mDetailsPanel;
 
 	Ogre::Timer* timer;
+
+	Ogre::ParticleSystem* mParticleSystem;
+	Ogre::SceneNode* particleNode;
 
 	Physics* physEngine;
 	PlayerShip* player;

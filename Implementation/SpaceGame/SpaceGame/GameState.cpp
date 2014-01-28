@@ -81,6 +81,11 @@ void GameState::createScene(Ogre::SceneNode* playerNode)
 		//mOgreHeadMatHigh = mOgreHeadMat->clone("OgreHeadMatHigh");
 		//mOgreHeadMatHigh->getTechnique(0)->getPass(0)->setAmbient(1, 0, 0);
 		//mOgreHeadMatHigh->getTechnique(0)->getPass(0)->setDiffuse(1, 0, 0, 0);
+
+		mParticleSystem = mSceneMgr->createParticleSystem("SpaceDust", "Space/Dust");
+		SceneNode* cam = mSceneMgr->getSceneNode("OculusStereoCameraNode");
+		particleNode = cam->createChildSceneNode("DustParticles", Engine::getSingletonPtr()->mCameraNode->getPosition());
+		particleNode->attachObject(mParticleSystem);
 	}
 
 	// Set up Bullet Physics
@@ -368,7 +373,7 @@ void GameState::update(double timeSinceLastFrame)
 				state = "PATROL";
 				Engine::getSingletonPtr()->mLog->logMessage("AI STATE " + state + "->" + sc.toString(testEnemy1->getPatrolPoint()));
 			default:
-				Engine::getSingletonPtr()->mLog->logMessage("DISTANCE TARGET " + sc.toString(distanceToTarget));
+				Engine::getSingletonPtr()->mLog->logMessage("DISTANCE TO TARGET ^2 " + sc.toString(distanceToTarget));
 				break;
 		}
 		//CHECKING SCENENODES
@@ -376,7 +381,46 @@ void GameState::update(double timeSinceLastFrame)
 		Engine::getSingletonPtr()->mLog->logMessage("ENEMY1 POS " + sc.toString(testEnemy1->getPosition()));
 		timer->reset();
 	}
+	spaceDust();
+}
 
+void GameState::spaceDust()
+{
+	//Space Dust Particle System
+	const float maxDist = 250;
+	const float mirrorDist = maxDist*0.99;
+	const float dimFactor = 0.8*0.005*0.005;
+	Camera* cam = mSceneMgr->getCamera("OculusCamLeft");
+	const Vector3& camPos = cam->getRealPosition();
+	const float maxDist2 = 2*maxDist;
+	
+	ParticleIterator pit = mParticleSystem->_getIterator();
+	while(!pit.end())
+	{
+		Particle* p = pit.getNext();
+		Vector3& pos = p->position;
+		p->timeToLive = 999999.0f;
+
+		// position particles near camera
+		// (keep moving them toward camera until within range)
+		while (pos.x - camPos.x > maxDist)
+			pos.x -= maxDist2;
+		while (pos.x - camPos.x < -maxDist)
+			pos.x += maxDist2;
+		while (pos.y - camPos.y > maxDist)
+			pos.y -= maxDist2;
+		while (pos.y - camPos.y < -maxDist)
+			pos.y += maxDist2;
+		while (pos.z - camPos.z > maxDist)
+			pos.z -= maxDist2;
+		while (pos.z - camPos.z < -maxDist)
+			pos.z += maxDist2;
+
+		Vector3 pDir = pos - camPos;
+		float dist = pDir.squaredLength();
+		float dim = dist*dimFactor;
+		p->setDimensions(dim, dim);
+	}
 }
 
 void GameState::setupGUI()

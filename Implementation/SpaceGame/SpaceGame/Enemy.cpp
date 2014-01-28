@@ -43,7 +43,7 @@ int Enemy::updateAIState(Ogre::Vector3 targetPos, Ogre::Quaternion targetOrient)
 	{
 		currState = 0; //FLEE STATE
 		distanceToTarget = flee(targetPos, targetOrient);
-	} if(sceneNode->getPosition().squaredDistance(targetPos) < 500)
+	} if(sceneNode->getPosition().squaredDistance(targetPos) < 1000)
 	{
 		currState = 1; //SEEK STATE
 		distanceToTarget = seek(targetPos, targetOrient);
@@ -95,10 +95,10 @@ int Enemy::seek(Ogre::Vector3 targetPos, Ogre::Quaternion targetOrient)
 	yaw(torque.x);
 	roll(targetVectorOrientation.getRotationTo(currVectorOrientation).getRoll().valueRadians());
 	
-	if(sceneNode->getPosition().squaredDistance(targetPos) > 100)
+	if(sceneNode->getPosition().squaredDistance(targetPos) > 1000)
 	{
 		//thrust(1.0f);
-	} else if (sceneNode->getPosition().squaredDistance(targetPos) <= 100) 
+	} else if (sceneNode->getPosition().squaredDistance(targetPos) <= 1000) 
 	{
 		thrust(0.0f);
 	}
@@ -142,10 +142,10 @@ int Enemy::flee(Ogre::Vector3 targetPos, Ogre::Quaternion targetOrient)
 	yaw(torque.x);
 	roll(targetVectorOrientation.getRotationTo(currVectorOrientation).getRoll().valueRadians());
 	
-	if(sceneNode->getPosition().squaredDistance(targetPos) > 100)
+	if(sceneNode->getPosition().squaredDistance(targetPos) > 1000)
 	{
 		//thrust(1.0f);
-	} else if (sceneNode->getPosition().squaredDistance(targetPos) <= 100) 
+	} else if (sceneNode->getPosition().squaredDistance(targetPos) <= 1000) 
 	{
 		thrust(0.0f);
 	}
@@ -175,10 +175,10 @@ int Enemy::patrol(Ogre::Vector3 targetPos, Ogre::Quaternion targetOrient)
 	yaw(torque.x);
 	roll(targetVectorOrientation.getRotationTo(currVectorOrientation).getRoll().valueRadians());
 
-	if(sceneNode->getPosition().squaredDistance(targetPos) > 100)
+	if(sceneNode->getPosition().squaredDistance(targetPos) > 1000)
 	{
 		thrust(.6f);
-	} else if (sceneNode->getPosition().squaredDistance(targetPos) <= 100) 
+	} else if (sceneNode->getPosition().squaredDistance(targetPos) <= 1000) 
 	{
 		if(currentWaypoint <= 3)
 			currentWaypoint++;
