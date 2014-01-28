@@ -9,7 +9,7 @@ Physics::Physics()
 	bulSolver = new btSequentialImpulseConstraintSolver;
 	bulDynamicsWorld = new btDiscreteDynamicsWorld(bulDispatcher, bulBroadphase, bulSolver, bulCollisionConfiguration);
 	bulDynamicsWorld->setGravity(btVector3(0,0,0));
-
+	bulDebugDrawer = new BtOgre::DebugDrawer(Engine::getSingletonPtr()->mSceneManager->getRootSceneNode(), bulDynamicsWorld);
 }
 
 
@@ -30,4 +30,10 @@ void Physics::addRigidBody(btRigidBody* body)
 void Physics::stepSimulation(double timeSinceLastFrame, double subSteps)
 {
 	bulDynamicsWorld->stepSimulation(timeSinceLastFrame, subSteps);
+	bulDebugDrawer->step();
+}
+
+void Physics::setupDebugDrawer()
+{
+	bulDynamicsWorld->setDebugDrawer(bulDebugDrawer);
 }

@@ -195,6 +195,7 @@
     <ClInclude Include="PauseState.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="PlayerShip.h" />
+    <ClInclude Include="Projectile.h" />
     <ClInclude Include="Spacecraft.h" />
   </ItemGroup>
   <ItemGroup>
@@ -212,6 +213,7 @@
     <ClCompile Include="PauseState.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="PlayerShip.cpp" />
+    <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="Spacecraft.cpp" />
   </ItemGroup>
   <ItemGroup>

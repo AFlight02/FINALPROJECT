@@ -57,13 +57,20 @@ void GameState::exit()
 
 void GameState::createScene(Ogre::SceneNode* playerNode)
 {
+	//physEngine->setupDebugDrawer();
 	if(!mAlreadyInit)
 	{
-		player = new PlayerShip("Player", "cockpit2.mesh", true, 2000, 400, 25, 5, 5, 5, 25, 15);
-		testEnemy1 = new Enemy("Enemy1", "enemyShip1.mesh", true, 200, 400, 25, 5, 5, 5, 25, 15);
+		player = new PlayerShip("Player", "cockpit2.mesh", true, 2000, 80, 25, 5, 5, 5, 25, 15);
+		testEnemy1 = new Enemy("Enemy1", "enemyShip1.mesh", true, 200, 50, 25, 5, 5, 5, 25, 15);
+		btTransform trans;
+		trans.setIdentity();
+		trans.setOrigin(BtOgre::Convert::toBullet(Ogre::Vector3(0,0,500)));
+		testEnemy1->getMotionState()->setWorldTransform(trans);
+
 		mSceneMgr->getRootSceneNode()->removeChild("PlayerNode");
 		player->getSceneNode()->addChild(playerNode);
 		mSceneMgr->createLight("Light")->setPosition(10000,10000,10000);
+		mSceneMgr->setAmbientLight(Ogre::ColourValue(0.2f, 0.2f, 0.2f));
 	
 		//mOgreHeadEntity = mSceneMgr->createEntity("OgreHeadEntity", "ogrehead.mesh");
 		//mOgreHeadNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("OgreHeadNode");
@@ -273,35 +280,9 @@ void GameState::getInput()
 
 void GameState::update(double timeSinceLastFrame)
 {
+	int distanceToTarget = 0;
 	mFrameEvent.timeSinceLastFrame = timeSinceLastFrame;
 	Engine::getSingletonPtr()->mTrayMgr->frameRenderingQueued(mFrameEvent);
-
-	if(timer->getMilliseconds() > 2500)
-	{
-		// CHECKING STATES
-		int currState = testEnemy1->getAIState();
-		Ogre::String state;
-		switch(currState)
-		{
-			case(0):
-				state = "SEEK";
-				Engine::getSingletonPtr()->mLog->logMessage("AI STATE - SEEK");
-				break;
-			case(1):
-				state = "FLEE";
-				Engine::getSingletonPtr()->mLog->logMessage("AI STATE - FLEE");
-				break;
-			default:
-				state = "N/A";
-				Engine::getSingletonPtr()->mLog->logMessage("AI STATE - NONE");
-				break;
-		}
-		//CHECKING SCENENODES
-		Ogre::StringConverter sc;
-		Engine::getSingletonPtr()->mLog->logMessage("PLAYER POS " + sc.toString(player->getPosition()));
-		Engine::getSingletonPtr()->mLog->logMessage("ENEMY1 POS " + sc.toString(testEnemy1->getPosition()));
-		timer->reset();
-	}
 
 	getInput();
 
@@ -322,7 +303,10 @@ void GameState::update(double timeSinceLastFrame)
 	player->getRigidBody()->applyCentralImpulse(correctedTrans/100);
 	player->update(timeSinceLastFrame);
 
-	testEnemy1->updateAIState(player->getSceneNode()->getPosition(), player->getSceneNode()->getOrientation());
+
+	// UPDATE AI STATE
+	distanceToTarget = testEnemy1->updateAIState(player->getSceneNode()->getPosition(), player->getSceneNode()->getOrientation());
+
 	btTransform enemyTrans;
 	testEnemy1->getMotionState()->getWorldTransform(enemyTrans);
 	//btQuaternion enemyOrientation = enemyTrans.getRotation();
@@ -331,7 +315,7 @@ void GameState::update(double timeSinceLastFrame)
 	//btVector3 enemyCorrectedRot = enemyMovement * testEnemy1->getRotationVector();
 	btVector3 enemyCorrectedTrans = enemyMovement * testEnemy1->getTranslationVector();
 	//testEnemy1->getRigidBody()->applyTorqueImpulse(enemyCorrectedRot/100);
-	testEnemy1->getRigidBody()->applyTorque(testEnemy1->getRigidBody()->getInvInertiaTensorWorld().inverse() * testEnemy1->getRigidBody()->getWorldTransform().getBasis() * testEnemy1->getRotationVector() * .0001f);
+	testEnemy1->getRigidBody()->applyTorque(testEnemy1->getRigidBody()->getInvInertiaTensorWorld().inverse() * testEnemy1->getRigidBody()->getWorldTransform().getBasis() * testEnemy1->getRotationVector() * .001f);
 	testEnemy1->getRigidBody()->applyCentralImpulse(enemyCorrectedTrans/100);
 	testEnemy1->update(timeSinceLastFrame);
 
@@ -363,6 +347,36 @@ void GameState::update(double timeSinceLastFrame)
 	//		mDetailsPanel->setParamValue(4, state);
 	//	}
 	//}
+
+	if(timer->getMilliseconds() > 2500)
+	{
+		Ogre::StringConverter sc;
+		// CHECKING STATES
+		int currState = testEnemy1->getAIState();
+		Ogre::String state;
+		switch(currState)
+		{
+			case(0):
+				state = "FLEE";
+				Engine::getSingletonPtr()->mLog->logMessage("AI STATE " + state);
+				break;
+			case(1):
+				state = "SEEK";
+				Engine::getSingletonPtr()->mLog->logMessage("AI STATE " + state);
+				break;
+			case(2):
+				state = "PATROL";
+				Engine::getSingletonPtr()->mLog->logMessage("AI STATE " + state + "->" + sc.toString(testEnemy1->getPatrolPoint()));
+			default:
+				Engine::getSingletonPtr()->mLog->logMessage("DISTANCE TARGET " + sc.toString(distanceToTarget));
+				break;
+		}
+		//CHECKING SCENENODES
+		Engine::getSingletonPtr()->mLog->logMessage("PLAYER POS " + sc.toString(player->getPosition()));
+		Engine::getSingletonPtr()->mLog->logMessage("ENEMY1 POS " + sc.toString(testEnemy1->getPosition()));
+		timer->reset();
+	}
+
 }
 
 void GameState::setupGUI()

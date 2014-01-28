@@ -9,6 +9,8 @@ public:
 	void addRigidBody(btRigidBody* body);
 	void stepSimulation(double timeSinceLastFrame, double subSteps);
 
+	void setupDebugDrawer();
+
 protected:
 	// Bullet Resources
 	btBroadphaseInterface* bulBroadphase;
@@ -16,5 +18,7 @@ protected:
 	btCollisionDispatcher* bulDispatcher;
 	btSequentialImpulseConstraintSolver* bulSolver;
 	btDiscreteDynamicsWorld* bulDynamicsWorld;
+
+	BtOgre::DebugDrawer* bulDebugDrawer;
 };
 

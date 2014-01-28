@@ -122,6 +122,14 @@ void Spacecraft::update(double timeSinceLastFrame)
 	rotation += btVector3(currPitch, currYaw, currRoll);
 	translation += btVector3(currTranslateX, currTranslateY, currTranslateZ);
 
+	btVector3 velocity = shipRigidBody->getLinearVelocity();
+	btScalar speed = velocity.length();
+	if(speed > MAX_VELOCITY)
+	{
+		velocity *= MAX_VELOCITY/speed;
+		shipRigidBody->setLinearVelocity(velocity);
+	}
+
 	if(rotation.x() > 0)
 		rotation.setX(rotation.x()-timeSinceLastFrame);
 	if(rotation.x() < 0)

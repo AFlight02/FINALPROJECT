@@ -9,11 +9,16 @@ public:
 	~Enemy();
 
 	int getAIState();
-	void updateAIState(Ogre::Vector3 targetPos, Ogre::Quaternion targetOrient);
-	void seek(Ogre::Vector3 targetPos, Ogre::Quaternion targetOrient);
-	void flee(Ogre::Vector3 targetPos, Ogre::Quaternion targetOrient);
+	int getPatrolPoint();
+	int updateAIState(Ogre::Vector3 targetPos, Ogre::Quaternion targetOrient);
+	int seek(Ogre::Vector3 targetPos, Ogre::Quaternion targetOrient);
+	int flee(Ogre::Vector3 targetPos, Ogre::Quaternion targetOrient);
+	int patrol(Ogre::Vector3 targetPos, Ogre::Quaternion targetOrient);
+
+	Ogre::SceneNode* waypoints[4];
 
 protected:
 	int currState;
+	int currentWaypoint;
 };
 

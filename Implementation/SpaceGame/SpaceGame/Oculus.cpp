@@ -3,7 +3,7 @@
 namespace
 {
 	const float g_defaultNearClip = 0.01f;
-	const float g_defaultFarClip = 10000.0f;
+	const float g_defaultFarClip = 50000.0f;
 	const float g_defaultIPD = 0.064f;
 	const Ogre::ColourValue g_defaultViewportColour(97/255.0f, 97/255.0f, 200/255.0f);
 	const float g_defaultProjectionCentreOffset = 0.14529906f;
