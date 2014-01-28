@@ -64,7 +64,7 @@ void GameState::createScene(Ogre::SceneNode* playerNode)
 		testEnemy1 = new Enemy("Enemy1", "enemyShip1.mesh", true, 200, 50, 25, 5, 5, 5, 25, 15);
 		btTransform trans;
 		trans.setIdentity();
-		trans.setOrigin(BtOgre::Convert::toBullet(Ogre::Vector3(0,0,500)));
+		trans.setOrigin(BtOgre::Convert::toBullet(Ogre::Vector3(0,0,-500)));
 		testEnemy1->getMotionState()->setWorldTransform(trans);
 
 		mSceneMgr->getRootSceneNode()->removeChild("PlayerNode");
@@ -82,6 +82,13 @@ void GameState::createScene(Ogre::SceneNode* playerNode)
 		//mOgreHeadMatHigh->getTechnique(0)->getPass(0)->setAmbient(1, 0, 0);
 		//mOgreHeadMatHigh->getTechnique(0)->getPass(0)->setDiffuse(1, 0, 0, 0);
 
+		//Setup Sun Particle System
+		mSunParticleSystem = mSceneMgr->createParticleSystem("Sun", "Space/Sun");
+		mSunNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("SunParticle");
+		mSunNode->setPosition(0, 0, -500);
+		mSunNode->attachObject(mSunParticleSystem);
+
+		//Setup Space Dust Particles
 		mParticleSystem = mSceneMgr->createParticleSystem("SpaceDust", "Space/Dust");
 		SceneNode* cam = mSceneMgr->getSceneNode("OculusStereoCameraNode");
 		particleNode = cam->createChildSceneNode("DustParticles", Engine::getSingletonPtr()->mCameraNode->getPosition());

@@ -54,6 +54,9 @@ private:
 	Ogre::ParticleSystem* mParticleSystem;
 	Ogre::SceneNode* particleNode;
 
+	Ogre::ParticleSystem* mSunParticleSystem;
+	Ogre::SceneNode* mSunNode;
+
 	Physics* physEngine;
 	PlayerShip* player;
 	Enemy* testEnemy1;
