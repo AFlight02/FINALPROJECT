@@ -82,12 +82,6 @@ void GameState::createScene(Ogre::SceneNode* playerNode)
 		//mOgreHeadMatHigh->getTechnique(0)->getPass(0)->setAmbient(1, 0, 0);
 		//mOgreHeadMatHigh->getTechnique(0)->getPass(0)->setDiffuse(1, 0, 0, 0);
 
-		//Setup Sun Particle System
-		mSunParticleSystem = mSceneMgr->createParticleSystem("Sun", "Space/Sun");
-		mSunNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("SunParticle");
-		mSunNode->setPosition(0, 0, -500);
-		mSunNode->attachObject(mSunParticleSystem);
-
 		//Setup Space Dust Particles
 		mParticleSystem = mSceneMgr->createParticleSystem("SpaceDust", "Space/Dust");
 		SceneNode* cam = mSceneMgr->getSceneNode("OculusStereoCameraNode");
@@ -118,7 +112,7 @@ void GameState::createScene(Ogre::SceneNode* playerNode)
 
 	timer = new Timer();
 	
-	mSceneMgr->setDisplaySceneNodes(true);
+	//mSceneMgr->setDisplaySceneNodes(true);
 
 	mAlreadyInit = true;
 }
@@ -303,6 +297,7 @@ void GameState::update(double timeSinceLastFrame)
 		popState();
 		return;
 	}
+	//spaceDust();
 	physEngine->stepSimulation(timeSinceLastFrame,5);
 	
 	btTransform trans;
@@ -311,7 +306,7 @@ void GameState::update(double timeSinceLastFrame)
 	btMatrix3x3& movement = player->getRigidBody()->getWorldTransform().getBasis();
 	btVector3 correctedTrans = movement * player->getTranslationVector();
 	//player->getRigidBody()->applyTorqueImpulse(correctedRot/100);
-	player->getRigidBody()->applyTorque(player->getRigidBody()->getInvInertiaTensorWorld().inverse() * player->getRigidBody()->getWorldTransform().getBasis() * player->getRotationVector() * .0001f);
+	player->getRigidBody()->applyTorqueImpulse(player->getRigidBody()->getInvInertiaTensorWorld().inverse() * player->getRigidBody()->getWorldTransform().getBasis() * player->getRotationVector() * .001f);
 	player->getRigidBody()->applyCentralImpulse(correctedTrans/100);
 	player->update(timeSinceLastFrame);
 
@@ -388,7 +383,6 @@ void GameState::update(double timeSinceLastFrame)
 		Engine::getSingletonPtr()->mLog->logMessage("ENEMY1 POS " + sc.toString(testEnemy1->getPosition()));
 		timer->reset();
 	}
-	spaceDust();
 }
 
 void GameState::spaceDust()
